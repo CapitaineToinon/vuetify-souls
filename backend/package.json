@@ -10,9 +10,9 @@
   "dependencies": {
     "cached-request": "^1.1.4",
     "cookie-parser": "~1.4.3",
-    "debug": "~2.6.9",
+    "debug": "~4.0.1",
     "express": "~4.16.0",
-    "http-errors": "~1.6.2",
+    "http-errors": "~1.7.1",
     "morgan": "~1.9.0",
     "request": "^2.88.0"
   },
