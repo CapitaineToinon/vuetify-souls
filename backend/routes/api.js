@@ -43,7 +43,15 @@ router.get('/games', function (req, res, next) {
 })
 
 router.get('/leaderboard/:game/:category', function(req, res, next) {
-    api.getLeaderboard(req.params.game, req.params.category, (error, leaderboard) => {
+
+    var subCategories = []
+    for(var q in req.query) {
+        if (q.startsWith('var-')) {
+            subCategories.push(q + '=' + req.query[q])
+        }
+    }
+
+    api.getLeaderboard(req.params.game, req.params.category, subCategories, (error, leaderboard) => {
         if (error) return HandleError(error, res)
         res.json(leaderboard)
     })
