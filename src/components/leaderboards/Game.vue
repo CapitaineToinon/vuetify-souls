@@ -4,27 +4,22 @@
             <div class="four wide column">
                 <h1>{{ game.names.international }}</h1>
                 <img class="ui image centered rounded" :src="game.assets['cover-large'].uri"/>
-
-                <div class="ui compact menu">
-                    <div class="ui simple dropdown item">
-                        Dropdown
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <div
-                                    class="item"
-                                    v-for="(category, index) in categories"
-                                    :key="index"
-                                    :data-value="index"
-                                    @click="setCategory(index)"
-                            >{{ category.name }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="twelve wide column">
-                <Leabderboard :categoryId="categories[selectedCategory].id" :game="game"></Leabderboard>
+
+                <sui-dropdown
+                              selection
+                              :options="categoriesOption"
+                              v-model="selectedCategory"
+                ></sui-dropdown>
+
+                <Leabderboard
+                        :game="game"
+                        :category="category"
+                        :variables="variables"
+                        :platforms="platforms"
+                        ></Leabderboard>
             </div>
         </div>
 </template>
@@ -62,8 +57,23 @@
             game: function () {
                 return this.getGameByAbb(this.$route.params.abbreviation)
             },
-            categories : function() {
-                return  this.game.categories.data
+            categoriesOption: function(){
+                var options = []
+                this.game.categories.data.forEach((c, i) => options.push({
+                    text: c.name,
+                    value: i
+                }))
+
+                return options
+            },
+            category : function() {
+                return this.game.categories.data[this.selectedCategory]
+            },
+            variables: function () {
+                return this.game.variables.data.filter(v => v.category === this.category.id)
+            },
+            platforms: function() {
+                return this.game.platforms.data
             },
             ...mapGetters([
                 'getGameByAbb',
@@ -71,7 +81,7 @@
             ]),
         },
         mounted() {
-            console.log('Game page')
+
         }
     }
 </script>

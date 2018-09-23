@@ -54,17 +54,36 @@ function e(url, cb) {
  * Get Souls Games
  */
 function SoulsGames(cb) {
-    e('/series/' + SERIE_NAME + '/games?embed=categories', (error, games) => {
+    e('/series/' + SERIE_NAME + '/games?embed=categories,variables,platforms', (error, games) => {
         if (error) cb(error)
 
         cb(null, games)
     })
 }
 
-function Leaderboard(game, category, cb) {
-    e('/leaderboards/' + game + '/category/' + category + '?embed=players,variables', (error, leaderboard) => {
+function Leaderboard(game, category, subCategories, cb) {
+
+    console.log(subCategories)
+
+    SoulsGames(function (error, games) {
         if (error) cb(error)
-        cb(null, leaderboard)
+
+        // We only allow games from the souls franchise
+        if (games.data.findIndex(g => g.id === game || g.abbreviation === game) !== -1) {
+
+            var url = '/leaderboards/' + game + '/category/' + category
+                + '?embed=players,variables&'
+                + subCategories.join('&')
+
+            console.log(url)
+
+            e(url, (error, leaderboard) => {
+                if (error) cb(error)
+                cb(null, leaderboard)
+            })
+        } else {
+            cb({"message": "Game not found"})
+        }
     })
 }
 
@@ -81,18 +100,6 @@ module.exports = {
             cb(null, game)
         })
     },
-    getSoulsGames: (cb) => {
-        SoulsGames((error, serie) => {
-            if (error) cb(error)
-
-            cb(null, serie)
-        })
-    },
-    getLeaderboard: (game, category, cb) => {
-        Leaderboard(game, category, (error, leaderboard) => {
-            if (error) cb(error)
-
-            cb(null, leaderboard)
-        })
-    }
+    getSoulsGames: SoulsGames,
+    getLeaderboard: Leaderboard,
 }

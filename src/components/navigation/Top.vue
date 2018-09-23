@@ -40,11 +40,6 @@
 
             }
         },
-        watch: {
-            Mounted() {
-                console.log('Mounted changed', this.Mounted)
-            }
-        },
         computed: {
             ...mapGetters([
                 'Games',
@@ -63,9 +58,6 @@
             unsetGames() {
                 this.clearGames()
             }
-        },
-        mounted() {
-            console.log('Mounted state', this.Mounted)
         }
     }
 </script>
