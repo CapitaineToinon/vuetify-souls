@@ -64,7 +64,8 @@
                     <td v-else>{{ players[index].name }}</td>
 
                     <!-- Primary timing -->
-                    <td>{{ run.run.times.primary_t | formatTime }}</td>
+                    <td v-if="needsFixing(game, run)">{{ run.run.times['primary_t'] | formatTime }}</td>
+                    <td v-else>{{ run.run.times[game.ruleset['default-time'] + '_t'] | formatTime }}</td>
 
                     <!-- Other timing methods /w FIX -->
                     <td v-if="needsFixing(game, run)"></td>
