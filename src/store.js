@@ -16,7 +16,8 @@ export default new Vuex.Store({
             realtime: 'Real Time',
             realtime_noloads: 'Real Time no Load',
             ingame: 'In-game Time'
-        }
+        },
+        timingMethodToFix: 'realtime_noloads'
     },
     actions: {},
     mutations: {

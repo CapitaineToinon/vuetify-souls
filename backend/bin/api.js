@@ -62,9 +62,18 @@ function SoulsGames(cb) {
 }
 
 function Leaderboard(game, category, cb) {
-    e('/leaderboards/' + game + '/category/' + category + '?embed=players,variables', (error, leaderboard) => {
+    SoulsGames(function (error, games) {
         if (error) cb(error)
-        cb(null, leaderboard)
+
+        // We only allow games from the souls franchise
+        if (games.data.findIndex(g => g.id === game || g.abbreviation === game) !== -1) {
+            e('/leaderboards/' + game + '/category/' + category + '?embed=players,variables,platforms', (error, leaderboard) => {
+                if (error) cb(error)
+                cb(null, leaderboard)
+            })
+        } else {
+            cb({"message": "Game not found"})
+        }
     })
 }
 
