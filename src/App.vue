@@ -6,7 +6,7 @@
 </template>
 
 <script>
-    import navigationTop from './components/navigation/top'
+    import navigationTop from './components/navigation/Top'
     import {mapMutations} from 'vuex'
 
     window.$ = require('jquery')
