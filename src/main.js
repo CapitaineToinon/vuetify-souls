@@ -17,7 +17,10 @@ import 'semantic-ui/dist/semantic.min.css'
 
 window.$ = window.jQuery = require('jquery')
 
-require('semantic-ui/dist/semantic.min')
+import SuiVue from 'semantic-ui-vue';
+Vue.use(SuiVue)
+
+// require('semantic-ui/dist/semantic.min')
 
 /**
  * Filters
