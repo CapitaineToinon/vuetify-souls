@@ -38,7 +38,7 @@ const getRun = id => new Promise((resolve, reject) => {
         const run = yield e(`/runs/${id}?embed=players`);
 
         if (!games.find(g => g.id === run.data.game)) {
-            let error = new Error('Run not found.');
+            const error = new Error('Run not found.');
             error.code = 404;
             throw error;
         }
@@ -55,7 +55,7 @@ const getLeaderboard = (game, category, subCategories) => new Promise((resolve, 
         const games = yield getSoulsGames();
 
         if (!games.find(g => g.id === game || g.abbreviation === game)) {
-            let error = new Error('Game not found.');
+            const error = new Error('Game not found.');
             error.code = 404;
             throw error;
         }
