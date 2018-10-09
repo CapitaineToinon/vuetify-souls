@@ -7,14 +7,12 @@
 </template>
 
 <script>
-    export default {
-        name: "about_c",
-        data() {
-            return {
-                msg: "About page"
-            }
-        }
-    }
+export default {
+    name: 'about_c',
+    data: () => ({
+        msg: 'About page',
+    }),
+};
 </script>
 
 <style scoped>
