@@ -8,13 +8,13 @@
     "debug": "DEBUG=backend:* npm run dev"
   },
   "dependencies": {
-    "cached-request": "^1.1.4",
+    "axios": "^0.18.0",
+    "cachios": "^2.0.0",
+    "co": "^4.6.0",
     "cookie-parser": "~1.4.3",
     "debug": "~4.0.1",
     "express": "~4.16.0",
-    "http-errors": "~1.7.1",
-    "morgan": "~1.9.0",
-    "request": "^2.88.0"
+    "morgan": "^1.9.1"
   },
   "devDependencies": {
     "nodemon": "^1.18.4"
