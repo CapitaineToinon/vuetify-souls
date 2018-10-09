@@ -1,0 +1,58 @@
+{
+    "root": true,
+    "env": {
+        "browser": true
+    },
+    "extends": [
+        "plugin:vue/essential",
+        "eslint:recommended",
+        "prettier",
+        "airbnb-base"
+    ],
+    "plugins": [
+        "prettier",
+        "vue"
+    ],
+    "settings": {
+        "import/resolver": {
+            "webpack": {
+                "config": "build/webpack.base.conf.js"
+            }
+        }
+    },
+    "rules": {
+        "indent": ["error", 4],
+        "func-names": ["error", "as-needed", {
+            "generators": "never"
+        }],
+        "import/extensions": [
+            "error",
+            "always",
+            {
+                "js": "never",
+                "vue": "never"
+            }
+        ],
+        "no-param-reassign": [
+            "error",
+            {
+                "props": false,
+                "ignorePropertyModificationsFor": [
+                    "state",
+                    "acc",
+                    "e",
+                    "err",
+                    "error"
+                ]
+            }
+        ],
+        "import/no-extraneous-dependencies": [
+            "error",
+            {
+                "optionalDependencies": [
+                    "test/unit/index.js"
+                ]
+            }
+        ]
+    }
+}

@@ -1,105 +1,80 @@
-var request = require('request')
-    , cachedRequest = require('cached-request')(request)
-    , cacheDirectory = "/tmp/speedsouls/cache"
-    , BASE_URL = 'https://www.speedrun.com/api/v1'
-    , SERIE_NAME = 'souls'
-    , CACHE_DURATION = 1000 * 60;
+const cachios = require('cachios');
+const co = require('co');
 
-cachedRequest.setValue('ttl', CACHE_DURATION);
-cachedRequest.setCacheDirectory(cacheDirectory);
+const BASE_URL = 'https://www.speedrun.com/api/v1';
+const SERIE_NAME = 'souls';
+const CACHE_DURATION = 5 * 60; // 5 minutes
+const TIMEOUT_LIMIT = 10 * 1000; // 10 seconds
 
 /**
- * ===================================================================================================================>>
+ * =========================================>>
  * ECHOS
- * ===================================================================================================================>>
+ * =========================================>>
  */
+const echoAbsolute = url => cachios.get(url, {
+    timeout: TIMEOUT_LIMIT,
+    ttl: CACHE_DURATION,
+}).then(resp => resp.data);
+const e = path => echoAbsolute(`${BASE_URL}${path}`);
 
 /**
- *
- * @param url
- * @param cb
- */
-function echoAbsolute(url, cb) {
-    var options = {
-        url: url
-    };
-    cachedRequest(options, function (error, response, body) {
-        if (error || response.statusCode !== 200) {
-            return cb(error || {})
-        }
-
-        cb(null, JSON.parse(body));
-    });
-}
-
-/**
- * Private function that echos speedrun.com api.
- * @param url
- * @param cb
- */
-function e(url, cb) {
-    echoAbsolute(BASE_URL + url, function (error, game) {
-        console.log('ACCESS :', BASE_URL + url)
-        cb(error, game);
-    })
-}
-
-/**
- * ===================================================================================================================>>
+ * =========================================>>
  * COMPUTED
- * ===================================================================================================================>>
+ * =========================================>>
  */
 
 /**
  * Get Souls Games
  */
-function SoulsGames(cb) {
-    e('/series/' + SERIE_NAME + '/games?embed=categories,variables,platforms', (error, games) => {
-        if (error) cb(error)
-
-        cb(null, games)
-    })
-}
-
-function Leaderboard(game, category, subCategories, cb) {
-
-    console.log(subCategories)
-
-    SoulsGames(function (error, games) {
-        if (error) cb(error)
-
-        // We only allow games from the souls franchise
-        if (games.data.findIndex(g => g.id === game || g.abbreviation === game) !== -1) {
-
-            var url = '/leaderboards/' + game + '/category/' + category
-                + '?embed=players,variables&'
-                + subCategories.join('&')
-
-            console.log(url)
-
-            e(url, (error, leaderboard) => {
-                if (error) cb(error)
-                cb(null, leaderboard)
-            })
-        } else {
-            cb({"message": "Game not found"})
-        }
-    })
-}
+const getSoulsGames = () => e(`/series/${SERIE_NAME}/games?embed=categories,variables,platforms`)
+    .then(serie => serie.data);
 
 /**
- * ===================================================================================================================>>
+ * Get a Souls Run
+ */
+const getRun = id => new Promise((resolve, reject) => {
+    co(function* () {
+        const games = yield getSoulsGames();
+        const run = yield e(`/runs/${id}?embed=players`);
+
+        if (!games.find(g => g.id === run.data.game)) {
+            let error = new Error('Run not found.');
+            error.code = 404;
+            throw error;
+        }
+
+        resolve(run);
+    }).catch(err => reject(err));
+});
+
+/**
+ * Get leaderboard
+ */
+const getLeaderboard = (game, category, subCategories) => new Promise((resolve, reject) => {
+    co(function* () {
+        const games = yield getSoulsGames();
+
+        if (!games.find(g => g.id === game || g.abbreviation === game)) {
+            let error = new Error('Game not found.');
+            error.code = 404;
+            throw error;
+        }
+
+        const url = `${`/leaderboards/${game}/category/${category}`
+            + '?embed=players,variables&'}${subCategories.join('&')}`;
+
+        const leaderboard = yield e(url).then(l => l.data);
+        resolve(leaderboard);
+    }).catch(err => reject(err));
+});
+
+/**
+ * =========================================>>
  * EXPORTS
- * ===================================================================================================================>>
+ * =========================================>>
  */
 module.exports = {
-    getHome: (cb) => {
-        e('/', (error, game) => {
-            if (error) cb(error)
-
-            cb(null, game)
-        })
-    },
-    getSoulsGames: SoulsGames,
-    getLeaderboard: Leaderboard,
-}
+    getSoulsGames,
+    getLeaderboard,
+    getRun,
+};
