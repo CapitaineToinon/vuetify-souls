@@ -31,10 +31,10 @@ const app = express();
  */
 axios.interceptors.response.use(
     config => config,
-    error => {
+    (error) => {
         error.code = 408;
         return Promise.reject(error);
-    }
+    },
 );
 
 /**
@@ -62,7 +62,8 @@ app.use((req, res) => {
 /**
  * Error handler
  */
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
+    // eslint-disable-next-line
     console.error(err);
     /**
      * Using err.response when the error is caused by speedrun.com
@@ -72,9 +73,9 @@ app.use((err, req, res, next) => {
     const statusText = (err.response) ? err.response.statusText || '' : '';
     const message = err.message || '';
     res.status(status).json({
-        status: status,
-        statusText: statusText,
-        message: message,
+        status,
+        statusText,
+        message,
     });
 });
 

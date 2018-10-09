@@ -44,8 +44,8 @@ router.get('/leaderboard/:game/:category', (req, res, next) => {
         .catch(err => next(err));
 });
 
-router.get('*', (req, res, next) => {
-    let error = new Error('');
+router.get('*', () => {
+    const error = new Error('');
     error.code = 404;
     throw error;
 });

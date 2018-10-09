@@ -36,14 +36,7 @@
         "no-param-reassign": [
             "error",
             {
-                "props": false,
-                "ignorePropertyModificationsFor": [
-                    "state",
-                    "acc",
-                    "e",
-                    "err",
-                    "error"
-                ]
+                "props": false
             }
         ],
         "import/no-extraneous-dependencies": [
