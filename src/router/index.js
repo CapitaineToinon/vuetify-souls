@@ -1,8 +1,9 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+import Vue from 'vue';
+import Router from 'vue-router';
+import HelloWorld from '../components/HelloWorld.vue';
+import About from '../components/About.vue';
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
     mode: 'history',
@@ -10,26 +11,16 @@ export default new Router({
         {
             path: '/',
             name: 'root',
-            component: HelloWorld
-        },
-        {
-            path: '/leaderboards',
-            name: 'Leaderboards',
-            component: resolve => require(['../components/Leaderboards'], resolve),
-        },
-        {
-            path: '/leaderboards/:abbreviation',
-            name: 'Game',
-            component: resolve => require(['../components/leaderboards/Game'], resolve),
+            component: HelloWorld,
         },
         {
             path: '/about',
-            name: 'About',
-            component: resolve => require(['../components/About'], resolve)
+            name: 'about',
+            component: resolve => resolve(About),
         },
         {
             path: '*',
-            redirect: { name: 'root' }
-        }
-    ]
-})
+            redirect: { name: 'root' },
+        },
+    ],
+});

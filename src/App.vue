@@ -1,45 +1,55 @@
 <template>
-    <div id="app">
-        <navigationTop></navigationTop>
-        <router-view/>
-    </div>
+    <v-app>
+        <Navbar></Navbar>
+        <v-content>
+            <v-container grid-list-md text-xs-center>
+                <router-view v-if="Mounted"></router-view>
+                <v-flex xs12 v-else>
+                    <v-progress-circular
+                            :size="50"
+                            :width="7"
+                            color="primary"
+                            indeterminate
+                    ></v-progress-circular>
+                </v-flex>
+            </v-container>
+        </v-content>
+    </v-app>
 </template>
 
 <script>
-    import navigationTop from './components/navigation/Top'
-    import {mapMutations} from 'vuex'
+import { mapActions, mapGetters } from 'vuex';
+import Navbar from './components/Navbar.vue';
 
-    window.$ = require('jquery')
-    window.JQuery = require('jquery')
-
-    export default {
-        name: 'App',
-        data() {
-            return {
-
-            }
+export default {
+    name: 'App',
+    data: () => ({
+        picker: null,
+        landscape: false,
+        reactive: false,
+    }),
+    computed: {
+        ...mapGetters(['Mounted']),
+    },
+    components: {
+        Navbar,
+    },
+    watch: {
+        $route() {
+            console.log('Route changed', this.$route.matched);
         },
-        components: {
-            navigationTop,
-        },
-        methods: {
-            ...mapMutations([
-                'updateGames' // map `this.clearGames()` to `this.$store.commit('clearGames')`
-            ]),
-        },
-        mounted() {
-            this.updateGames()
-        }
-    }
+    },
+    methods: {
+        ...mapActions(['updateGames']),
+    },
+    created() {
+        this.updateGames();
+    },
+};
 </script>
 
 <style>
-    #app {
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        text-align: center;
-        color: #2c3e50;
-        margin-top: 60px;
-    }
+#app {
+
+}
 </style>
