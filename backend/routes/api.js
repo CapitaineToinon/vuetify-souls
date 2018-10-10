@@ -1,7 +1,9 @@
 const express = require('express');
+const co = require('co');
 
 const router = express.Router();
 const src = require('../bin/speedruncom');
+const twitch = require('../bin/twitch');
 
 /**
  * const
@@ -45,9 +47,17 @@ router.get('/leaderboard/:game/:category', (req, res, next) => {
 });
 
 router.get('/livestreams', (req, res, next) => {
-    src.getLiveStreams()
-        .then(streams => res.json(streams))
-        .catch(err => next(err));
+    co(function* () {
+        const games = yield src.getSoulsGames();
+        const streams = yield twitch.getLiveStreams();
+
+        /**
+         * Exclude streams not playing a souls game
+         */
+        const gamesTwitchNames = games.map(g => g.names.twitch);
+        const soulsStreams = streams.filter(s => gamesTwitchNames.includes(s.game));
+        res.json(soulsStreams);
+    }).catch(err => next(err));
 });
 
 router.get('*', () => {

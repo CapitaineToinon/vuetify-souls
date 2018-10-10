@@ -1,6 +1,5 @@
 const cachios = require('cachios');
 const co = require('co');
-const twitch = require('./twitch');
 
 const BASE_URL = 'https://www.speedrun.com/api/v1';
 const SERIE_NAME = 'souls';
@@ -76,24 +75,6 @@ const getLeaderboard = (game, category, subCategories) => new Promise((resolve, 
 });
 
 /**
- * Twitch
- */
-const getLiveStreams = () => new Promise((resolve, reject) => {
-    co(function* () {
-        const games = yield getSoulsGames();
-        const streams = yield twitch.getLiveStreams();
-
-        /**
-         * Exclude streams not playing a souls game
-         */
-        const gamesTwitchNames = games.map(g => g.names.twitch);
-        const soulsStreams = streams.filter(s => gamesTwitchNames.includes(s.game));
-        resolve(soulsStreams);
-    }).catch(err => reject(err));
-});
-
-
-/**
  * =========================================>>
  * EXPORTS
  * =========================================>>
@@ -102,5 +83,4 @@ module.exports = {
     getSoulsGames,
     getLeaderboard,
     getRun,
-    getLiveStreams,
 };
