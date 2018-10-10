@@ -3,6 +3,8 @@
         <Navbar></Navbar>
         <v-content>
             <v-container grid-list-md text-xs-center>
+                <v-btn @click="set">Set Games</v-btn>
+                <v-btn @click="unset">Unset Games</v-btn>
                 <router-view v-if="Mounted"></router-view>
                 <v-flex xs12 v-else>
                     <v-progress-circular
@@ -40,10 +42,19 @@ export default {
         },
     },
     methods: {
-        ...mapActions(['updateGames']),
+        ...mapActions([
+            'updateGames',
+            'deleteGames',
+        ]),
+        set() {
+            this.updateGames();
+        },
+        unset() {
+            this.deleteGames();
+        },
     },
     created() {
-        this.updateGames();
+        this.set();
     },
 };
 </script>
