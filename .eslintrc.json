@@ -21,6 +21,12 @@
         }
     },
     "rules": {
+        "prefer-destructuring": ["error", {
+            "array": false,
+            "object": false
+        }, {
+            "enforceForRenamedProperties": false
+        }],
         "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
         "indent": ["error", 4],
         "func-names": ["error", "as-needed", {

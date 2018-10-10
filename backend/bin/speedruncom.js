@@ -29,18 +29,29 @@ const e = path => echoAbsolute(`${BASE_URL}${path}`);
 const getSoulsGames = () => e(`/series/${SERIE_NAME}/games?embed=categories,variables,platforms`)
     .then(serie => serie.data);
 
+const getSoulsGame = game => new Promise((resolve, reject) => {
+    co(function* () {
+        const games = yield getSoulsGames();
+        const thegame = games.find(g => g.id === game
+            || g.abbreviation === game
+            || g.names.twitch === game);
+
+        resolve(thegame);
+    }).catch(err => reject(err));
+});
+
 /**
  * Get a Souls Run
  */
 const getRun = id => new Promise((resolve, reject) => {
     co(function* () {
-        const games = yield getSoulsGames();
         const run = yield e(`/runs/${id}?embed=players`);
+        const game = yield getSoulsGame(run.data.game);
 
         /**
          * Reject runs not from the souls serie
          */
-        if (!games.find(g => g.id === run.data.game)) {
+        if (!game) {
             const error = new Error('Run not found.');
             error.code = 404;
             throw error;
@@ -55,12 +66,12 @@ const getRun = id => new Promise((resolve, reject) => {
  */
 const getLeaderboard = (game, category, subCategories) => new Promise((resolve, reject) => {
     co(function* () {
-        const games = yield getSoulsGames();
+        const thegame = yield getSoulsGame(game);
 
         /**
          * Reject games not from the souls serie
          */
-        if (!games.find(g => g.id === game || g.abbreviation === game)) {
+        if (!thegame) {
             const error = new Error('Game not found.');
             error.code = 404;
             throw error;
@@ -75,6 +86,52 @@ const getLeaderboard = (game, category, subCategories) => new Promise((resolve, 
 });
 
 /**
+ * Get World Record for a game and category
+ */
+const getWorldRecord = (game, category) => new Promise((resolve, reject) => {
+    co(function* () {
+        const thegame = yield getSoulsGame(game);
+
+        /**
+         * Reject games not from the souls serie
+         */
+        if (!thegame) {
+            const error = new Error('Game not found.');
+            error.code = 404;
+            throw error;
+        }
+
+        const url = `${`/leaderboards/${thegame.id}/category/${category}`
+            + '?embed=players,variables,category&top=1'}`; // TODO ${subCategories.join('&')}`;
+
+        const wordrecord = yield e(url).then(wr => wr.data);
+        resolve(wordrecord);
+    }).catch(err => reject(err));
+});
+
+/**
+ * Get World Record for a game
+ */
+const getWorldRecords = (game, misc) => new Promise((resolve, reject) => {
+    co(function* () {
+        const thegame = yield getSoulsGame(game);
+
+        if (!thegame) {
+            const error = new Error('Game not found.');
+            error.code = 404;
+            throw error;
+        }
+
+        const categories = (misc)
+            ? thegame.categories.data
+            : thegame.categories.data.filter(c => c.miscellaneous === false);
+
+        const worldrecords = yield categories.map(c => getWorldRecord(thegame.id, c.id));
+        resolve(worldrecords);
+    }).catch(err => reject(err));
+});
+
+/**
  * =========================================>>
  * EXPORTS
  * =========================================>>
@@ -83,4 +140,6 @@ module.exports = {
     getSoulsGames,
     getLeaderboard,
     getRun,
+    getWorldRecord,
+    getWorldRecords,
 };

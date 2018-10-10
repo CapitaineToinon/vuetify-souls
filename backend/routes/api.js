@@ -5,9 +5,6 @@ const router = express.Router();
 const src = require('../bin/speedruncom');
 const twitch = require('../bin/twitch');
 
-/**
- * const
- */
 const BASE_URI = 'http://localhost:3000';
 
 router.get('*', (req, res, next) => {
@@ -58,6 +55,26 @@ router.get('/livestreams', (req, res, next) => {
         const soulsStreams = streams.filter(s => gamesTwitchNames.includes(s.game));
         res.json(soulsStreams);
     }).catch(err => next(err));
+});
+
+router.get('/wr/:game/:category', (req, res, next) => {
+    const game = req.params.game;
+    const category = req.params.category;
+    if (!category) {
+        next();
+        return;
+    }
+    src.getWorldRecord(game, category)
+        .then(wr => res.json(wr))
+        .catch(err => next(err));
+});
+
+router.get('/wr/:game', (req, res, next) => {
+    const game = req.params.game;
+    const misc = !!(req.query.misc);
+    src.getWorldRecords(game, misc)
+        .then(wrs => res.json(wrs))
+        .catch(err => next(err));
 });
 
 router.get('*', () => {

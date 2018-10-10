@@ -20,6 +20,7 @@ const PUBLIC_FOLDER = path.join(__dirname, 'public');
  * The rest of the routes is handled client side using Vue
  */
 const apiRouter = require('./routes/api');
+const wrapiRouter = require('./routes/wrapi');
 
 /**
  * App
@@ -51,6 +52,7 @@ app.use(express.static(PUBLIC_FOLDER));
  * Listen for API calls...
  */
 app.use('/api', apiRouter);
+app.use('/wrapi', wrapiRouter);
 
 /**
  * Redirect the rest to the Vue app
