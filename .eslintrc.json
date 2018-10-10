@@ -21,6 +21,7 @@
         }
     },
     "rules": {
+        "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
         "indent": ["error", 4],
         "func-names": ["error", "as-needed", {
             "generators": "never"
