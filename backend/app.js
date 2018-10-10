@@ -1,6 +1,7 @@
 /**
  * Requires
  */
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -37,6 +38,7 @@ axios.interceptors.response.use(
     },
 );
 
+
 /**
  * Express defaults
  */
@@ -61,13 +63,14 @@ app.use((req, res) => {
 
 /**
  * Error handler
+ * http://expressjs.com/en/guide/error-handling.html
  */
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
     // eslint-disable-next-line
-    console.error(err);
+    console.error(err.stack);
     /**
      * Using err.response when the error is caused by speedrun.com
-     * Using err.code when the error is caused by our own api
+     * Using err.code when the error is caused by our own api or twitch api
      */
     const status = (err.response) ? err.response.status || 500 : err.code || 500;
     const statusText = (err.response) ? err.response.statusText || '' : '';
