@@ -38,7 +38,6 @@ axios.interceptors.response.use(
     },
 );
 
-
 /**
  * Express defaults
  */
