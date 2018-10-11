@@ -29,6 +29,9 @@ const e = path => echoAbsolute(`${BASE_URL}${path}`);
 const getSoulsGames = () => e(`/series/${SERIE_NAME}/games?embed=categories,variables,platforms`)
     .then(serie => serie.data);
 
+/**
+ * Get a game from the souls serie
+ */
 const getSoulsGame = game => new Promise((resolve, reject) => {
     co(function* () {
         const games = yield getSoulsGames();
@@ -41,7 +44,8 @@ const getSoulsGame = game => new Promise((resolve, reject) => {
 });
 
 /**
- * Get a Souls Run
+ * Get a run
+ * Limited to runs from the souls serie
  */
 const getRun = id => new Promise((resolve, reject) => {
     co(function* () {
@@ -62,7 +66,8 @@ const getRun = id => new Promise((resolve, reject) => {
 });
 
 /**
- * Get leaderboard
+ * Get leaderboard for a game/category
+ * If the game has subcategories it needs to be specified
  */
 const getLeaderboard = (game, category, subCategories) => new Promise((resolve, reject) => {
     co(function* () {
@@ -77,8 +82,8 @@ const getLeaderboard = (game, category, subCategories) => new Promise((resolve, 
             throw error;
         }
 
-        const url = `${`/leaderboards/${game}/category/${category}`
-            + '?embed=players,variables&'}${subCategories.join('&')}`;
+        const url = `/leaderboards/${game}/category/${category}
+            ?embed=players,variables&'}${subCategories.join('&')}`;
 
         const leaderboard = yield e(url).then(l => l.data);
         resolve(leaderboard);
@@ -87,22 +92,32 @@ const getLeaderboard = (game, category, subCategories) => new Promise((resolve, 
 
 /**
  * Get World Record for a game and category
+ * No need to specify subcategories, we just use the default values
  */
 const getWorldRecord = (game, category) => new Promise((resolve, reject) => {
     co(function* () {
         const thegame = yield getSoulsGame(game);
+        const thecategory = thegame.categories.data.find(c => (c.id === category
+            || c.name === category
+            || c.weblink.split('#')[1].toLowerCase() === category.toLowerCase()));
 
         /**
          * Reject games not from the souls serie
          */
-        if (!thegame) {
-            const error = new Error('Game not found.');
+        if (!thegame || !thecategory) {
+            const error = new Error('Game or category not found.');
             error.code = 404;
             throw error;
         }
 
-        const url = `${`/leaderboards/${thegame.id}/category/${category}`
-            + '?embed=players,variables,category&top=1'}`; // TODO ${subCategories.join('&')}`;
+        const variables = thegame.variables.data.filter(f => f.category === thecategory.id && f['is-subcategory']);
+
+        const gameid = thegame.id;
+        const categoryid = thecategory.id;
+        const subCategories = variables.map(v => `var-${v.id}=${v.values.default}`);
+
+        const url = `/leaderboards/${gameid}/category/${categoryid}
+            ?embed=players,variables,category&top=1&${subCategories.join('&')}`;
 
         const wordrecord = yield e(url).then(wr => wr.data);
         resolve(wordrecord);
@@ -110,7 +125,7 @@ const getWorldRecord = (game, category) => new Promise((resolve, reject) => {
 });
 
 /**
- * Get World Record for a game
+ * Get World Records for a game
  */
 const getWorldRecords = (game, misc) => new Promise((resolve, reject) => {
     co(function* () {

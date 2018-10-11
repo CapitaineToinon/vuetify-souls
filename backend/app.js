@@ -49,9 +49,23 @@ app.use(cookieParser());
 app.use(express.static(PUBLIC_FOLDER));
 
 /**
- * Listen for API calls...
+ * Access-Control-Allow-Origin to *
+ */
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+});
+
+/**
+ * JSON API
+ * Includes a custom JSON error handler
  */
 app.use('/api', apiRouter);
+
+/**
+ * WRAPI
+ * Includes a custom plain text error handler
+ */
 app.use('/wrapi', wrapiRouter);
 
 /**
@@ -63,24 +77,12 @@ app.use((req, res) => {
 });
 
 /**
- * Error handler
- * http://expressjs.com/en/guide/error-handling.html
+ * Default global error handler
+ * TODO: Make a custom error handler
  */
 app.use((err, req, res, next) => {
-    // eslint-disable-next-line
-    console.error(err.stack);
-    /**
-     * Using err.response when the error is caused by speedrun.com
-     * Using err.code when the error is caused by our own api or twitch api
-     */
-    const status = (err.response) ? err.response.status || 500 : err.code || 500;
-    const statusText = (err.response) ? err.response.statusText || '' : '';
-    const message = err.message || '';
-    res.status(status).json({
-        status,
-        statusText,
-        message,
-    });
+    console.error(err.stack); // eslint-disable-line
+    res.status(500).send('Something broke!');
 });
 
 module.exports = app;
