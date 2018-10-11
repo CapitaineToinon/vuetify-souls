@@ -1,5 +1,4 @@
 const moment = require('moment');
-const co = require('co');
 const src = require('./speedruncom');
 
 const formatTime = (value) => {
@@ -26,21 +25,14 @@ const formatWorldRecord = (record) => {
     return `${categoryName} ${runTime} by ${playerNames}`;
 };
 
-const getWorldRecord = (game, category) => new Promise((resolve, reject) => {
-    co(function* () {
-        const wr = yield src.getWorldRecord(game, category);
-        resolve(formatWorldRecord(wr));
-    }).catch(err => reject(err));
-});
+const getWorldRecord = (game, category) => src.getWorldRecord(game, category)
+    .then(wr => formatWorldRecord(wr));
 
-const getWorldRecords = (game, misc) => new Promise((resolve, reject) => {
-    co(function* () {
-        const worldrecords = yield src.getWorldRecords(game, misc);
-        const prettyrecords = worldrecords.map(wr => formatWorldRecord(wr));
-        const output = prettyrecords.join(' | ');
-        resolve(output);
-    }).catch(err => reject(err));
-});
+const getWorldRecords = (game, misc) => src.getWorldRecords(game, misc)
+    .then((wrs) => {
+        const formatted = wrs.map(wr => formatWorldRecord(wr));
+        return formatted.join(' | ');
+    });
 
 /**
  * =========================================>>

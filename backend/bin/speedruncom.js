@@ -32,16 +32,10 @@ const getSoulsGames = () => e(`/series/${SERIE_NAME}/games?embed=categories,vari
 /**
  * Get a game from the souls serie
  */
-const getSoulsGame = game => new Promise((resolve, reject) => {
-    co(function* () {
-        const games = yield getSoulsGames();
-        const thegame = games.find(g => g.id === game
-            || g.abbreviation === game
-            || g.names.twitch === game);
-
-        resolve(thegame);
-    }).catch(err => reject(err));
-});
+const getSoulsGame = game => getSoulsGames()
+    .then(games => games.find(g => g.id === game
+    || g.abbreviation === game
+    || g.names.twitch === game));
 
 /**
  * Get a run
