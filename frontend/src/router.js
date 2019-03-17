@@ -6,7 +6,6 @@ Vue.use(Router);
 const routerOptions = [
   { path: '/', component: 'Base' },
   { path: '/leaderboards', component: 'Leaderboards' },
-  { path: '/calendar', component: 'Calendar' },
   { path: '/about', component: 'About' }
 ]
 
