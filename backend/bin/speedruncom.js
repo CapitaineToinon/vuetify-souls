@@ -74,7 +74,7 @@ const getLeaderboard = (game, category, subCategories) => co(function* () {
   }
 
   const url = `/leaderboards/${game}/category/${category}`
-    + `?embed=players,variables&'}${subCategories.join('&')}`;
+    + `?embed=players,variables&${subCategories.join('&')}`;
 
   const leaderboard = yield e(url).then(l => l.data);
   return leaderboard;
