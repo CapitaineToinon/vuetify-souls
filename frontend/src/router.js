@@ -1,22 +1,39 @@
-import Vue from 'vue';
-import Router from 'vue-router';
+import Vue from "vue";
+import Router from "vue-router";
+import Base from "@/views/Base.vue";
+import Leaderboard from "@/views/Leaderboards/Index.vue";
+import GamesList from "@/views/Leaderboards/GamesList.vue";
 
 Vue.use(Router);
 
-const routerOptions = [
-  { path: '/', component: 'Base' },
-  { path: '/leaderboards', component: 'Leaderboards' },
-  { path: '/about', component: 'About' }
-]
-
-const routes = routerOptions.map(route => {
-  return {
-    ...route,
-    component: () => import(`@/components/${route.component}.vue`)
-  }
-})
-
 export default new Router({
-  mode: 'history',
-  routes
-})
+  mode: "history",
+  routes: [
+    {
+      path: "/",
+      component: Base,
+      name: "home",
+    },
+    {
+      path: "/leaderboards",
+      component: Leaderboard, //() => import("@/views/Leaderboards/Index.vue"),
+      children: [
+        {
+          path: "",
+          name: "gamelist",
+          component: GamesList, // () => import("@/views/Leaderboards/GamesList.vue")
+        },
+        {
+          path: ":abbreviation",
+          name: "leaderboard",
+          component: () => import("@/views/Leaderboards/Leaderboard.vue")
+        }
+      ]
+    },
+    {
+      path: "/about",
+      name: "about",
+      component: import("@/views/About.vue")
+    }
+  ]
+});
