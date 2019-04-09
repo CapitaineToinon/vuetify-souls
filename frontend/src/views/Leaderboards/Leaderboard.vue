@@ -69,7 +69,7 @@ export default {
   },
 
   watch: {
-    game(newGame, oldGame) {
+    game(newGame, oldGame) { // eslint-disable-line
       if (this.game.categories.data.length > 0) {
         /**
          * Either get the category from the hash in the url
@@ -88,7 +88,7 @@ export default {
       }
     },
 
-    category(newCategory, oldCategory) {
+    category(newCategory, oldCategory) { // eslint-disable-line
       /**
        * Getting the sub categories
        * If variable.category is null then the sub category is global
@@ -140,7 +140,6 @@ export default {
     },
 
     onPlayerClick(player) {
-      console.log(player);
       window.open(player.weblink);
     },
 

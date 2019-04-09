@@ -32,9 +32,12 @@ new Vue({
   }),
   created() {
     this.getGames().then(() => {
-      /* eslint-disable-next-line */
-      console.log("Games properly loaded from main.js", this.games);
-      console.log(process.env.NODE_ENV);
+      /* eslint-disable */
+      if (process.env.NODE_ENV !== "production") {
+        console.log("Games properly loaded from main.js", this.games);
+        console.log(process.env.NODE_ENV);
+      }
+      /* eslint-disable */
     });
   }
 }).$mount("#app");

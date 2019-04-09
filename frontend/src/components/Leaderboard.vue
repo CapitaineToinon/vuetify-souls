@@ -68,12 +68,12 @@ export default {
     runs: {
       type: Array,
       required: true,
-      default: []
+      default: () => []
     },
     players: {
       type: Array,
       required: true,
-      default: []
+      default: () => []
     }
   },
 
@@ -179,7 +179,7 @@ export default {
     },
 
     formattedRuns() {
-      const formattedruns = this.runs.map((run, index) => {
+      const formattedruns = this.runs.map(run => {
         // Player's rank
         const place = run.place;
 
