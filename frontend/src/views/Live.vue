@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-layout wrap>
-      <v-flex v-for="stream in streams" :key="stream._id" class="pa-1" xs12 sm6 md4 grow>
+      <v-flex v-for="stream in suffledStreams" :key="stream._id" class="pa-1" xs12 sm6 md4 grow>
         <v-hover>
           <v-card
             slot-scope="{ hover }"
@@ -32,9 +32,14 @@
 import { mapGetters } from "vuex";
 
 export default {
-  computed: mapGetters({
-    streams: "twitch/streams"
-  }),
+  computed: {
+    ...mapGetters({
+      streams: "twitch/streams"
+    }),
+    suffledStreams() {
+      return [...this.streams].sort(() => 0.5 - Math.random());
+    }
+  },
   methods: {
     openStream(stream) {
       window.open(stream.channel.url);
