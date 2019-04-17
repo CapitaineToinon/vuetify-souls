@@ -1,10 +1,7 @@
+import { BASE_URL } from "./consants";
 import axios from "axios";
 import co from "co";
 
-const BASE_URL =
-  process.env.NODE_ENV !== "production"
-    ? "http://localhost:3000/api"
-    : "/api";
 
 /**
  * Relative api echo

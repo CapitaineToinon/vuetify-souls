@@ -152,6 +152,7 @@ export default {
           path: "/leaderboards",
           icon: "developer_board"
         },
+        { title: "Livestreams", path: "/live", icon: "subject" },
         { title: "Wiki", path: "/wiki", icon: "subject" },
         { title: "About", path: "/about", icon: "info" },
         { title: "Support Us", path: "/support", icon: "attach_money" }

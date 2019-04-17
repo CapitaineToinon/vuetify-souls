@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import Base from "@/views/Base.vue";
 import About from "@/views/About.vue";
+import Live from "@/views/Live.vue";
 import Leaderboard from "@/views/Leaderboards/Index.vue";
 import GamesList from "@/views/Leaderboards/GamesList.vue";
 
@@ -35,6 +36,11 @@ export default new Router({
       path: "/about",
       name: "about",
       component: About,
+    },
+    {
+      path: "/live",
+      name: "live",
+      component: Live,
     }
   ]
 });

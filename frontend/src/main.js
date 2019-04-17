@@ -46,13 +46,14 @@ new Vue({
   store,
   router,
   computed: mapGetters({
-    games: "speedruncom/games"
+    games: "speedruncom/games",
+    streams: "twitch/streams",
   }),
   methods: mapActions({
-    updateGames: "speedruncom/updateGames"
+    updateGames: "speedruncom/updateGames",
+    updateStreams: "twitch/updateStreams",
   }),
   created() {
-
     /**
      * Success and error events from the API
      */
@@ -74,5 +75,15 @@ new Vue({
     }).catch(() => {
 
     });
+  },
+
+  mounted() {
+    this.updateStreams()
+    .then(() => {
+      console.log("Streams", this.streams);
+    })
+    .catch(() => {
+
+    })
   }
 }).$mount("#app");
