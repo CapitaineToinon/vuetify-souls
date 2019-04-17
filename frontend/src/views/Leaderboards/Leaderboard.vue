@@ -29,7 +29,11 @@
           </v-btn-toggle>
         </v-flex>
 
-        <v-flex v-if="leaderboard !== null" xs12>
+        <v-flex v-if="error" xs12>
+          <v-alert :value="true" type="error">The leaderboards could not be loaded.</v-alert>
+          <v-btn @click="updateLeaderboard" color="error">Try again</v-btn>
+        </v-flex>
+        <v-flex v-else-if="leaderboard !== null" xs12>
           <leaderboard
             :game="game"
             :category="category"
@@ -61,6 +65,7 @@ export default {
 
   data() {
     return {
+      error: false,
       game: null,
       category: null,
       subCategories: null,
@@ -69,7 +74,8 @@ export default {
   },
 
   watch: {
-    game(newGame, oldGame) { // eslint-disable-line
+    game(newGame, oldGame) {
+      // eslint-disable-line
       if (this.game.categories.data.length > 0) {
         /**
          * Either get the category from the hash in the url
@@ -88,7 +94,8 @@ export default {
       }
     },
 
-    category(newCategory, oldCategory) { // eslint-disable-line
+    category(newCategory, oldCategory) {
+      // eslint-disable-line
       /**
        * Getting the sub categories
        * If variable.category is null then the sub category is global
@@ -161,6 +168,7 @@ export default {
     },
 
     updateLeaderboard() {
+      this.error = false;
       this.leaderboard = null;
 
       const gameid = this.game.id;
@@ -177,6 +185,9 @@ export default {
           if (gameid === this.game.id && categoryid === this.category.id) {
             this.leaderboard = leaderboard;
           }
+        })
+        .catch(error => {
+          this.error = true;
         });
     }
   },

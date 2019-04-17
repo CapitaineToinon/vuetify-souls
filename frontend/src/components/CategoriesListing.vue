@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-toolbar color="primary">
-      <v-toolbar-title >Categories</v-toolbar-title>
+      <v-toolbar-title>Categories</v-toolbar-title>
     </v-toolbar>
 
     <v-list one-line>

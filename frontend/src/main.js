@@ -3,11 +3,11 @@ import Vuetify from "vuetify";
 import App from "./App.vue";
 
 Vue.config.productionTip = false;
+
 import "vuetify/dist/vuetify.min.css";
 import "material-design-icons-iconfont/dist/material-design-icons.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 import "flag-icon-css/css/flag-icon.min.css";
-
 import theme from "./theme";
 Vue.use(Vuetify, { theme });
 
@@ -49,7 +49,7 @@ new Vue({
     games: "speedruncom/games"
   }),
   methods: mapActions({
-    getGames: "speedruncom/getGames"
+    updateGames: "speedruncom/updateGames"
   }),
   created() {
 
@@ -61,17 +61,18 @@ new Vue({
       (error) => {
         this.$toast.error('Something went wrong');
         console.error(error);
-        return Promise.reject();
       }
     )
 
-    this.getGames().then(() => {
+    this.updateGames().then(() => {
       /* eslint-disable */
       if (process.env.NODE_ENV !== "production") {
         console.log("Games properly loaded from main.js", this.games);
         console.log(process.env.NODE_ENV);
       }
       /* eslint-disable */
+    }).catch(() => {
+
     });
   }
 }).$mount("#app");

@@ -15,7 +15,7 @@ export default {
   },
 
   actions: {
-    getGames({ commit }) {
+    updateGames({ commit }) {
       return co(function*() {
         const games = yield api.getGames();
         commit("_setGames", games);
