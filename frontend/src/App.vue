@@ -90,7 +90,7 @@
         <div style="width: 8px"></div>
         <v-divider vertical inset></v-divider>
         <div style="width: 8px"></div>
-      </v-toolbar-items>   
+      </v-toolbar-items>
 
       <v-menu
         offset-y
@@ -98,7 +98,7 @@
         light
         min-width="300"
         content-class="dropdown-menu"
-        transition="slide-y-transition" 
+        transition="slide-y-transition"
         :close-on-content-click="false"
       >
         <v-btn icon slot="activator">
@@ -115,7 +115,22 @@
     <v-content>
       <router-view></router-view>
     </v-content>
-    
+
+    <v-fab-transition>
+      <v-btn
+        v-if="scrollBackToTop"
+        @click="$vuetify.goTo(0)"
+        color="primary"
+        dark
+        fab
+        fixed
+        bottom
+        right
+      >
+        <v-icon>keyboard_arrow_up</v-icon>
+      </v-btn>
+    </v-fab-transition>
+
     <v-footer class="pa-3">
       <v-spacer></v-spacer>
       <div>&copy; {{ new Date().getFullYear() }}</div>
@@ -124,12 +139,13 @@
 </template>
 
 <script>
-  export default {
+export default {
   data() {
-      return {
+    return {
+      scrollBackToTop: false,
       appTitle: "speedsouls",
-        sidebar: false,
-        menuItems: [
+      sidebar: false,
+      menuItems: [
         { title: "Home", path: "/", icon: "home" },
         {
           title: "Leaderboards",
@@ -139,13 +155,29 @@
         { title: "Wiki", path: "/wiki", icon: "subject" },
         { title: "About", path: "/about", icon: "info" },
         { title: "Support Us", path: "/support", icon: "attach_money" }
-        ],
-        secondaryItems: [
+      ],
+      secondaryItems: [
         { title: "Discord", path: "/link-to-discord", icon: "fab fa-discord" },
         { title: "Twitter", path: "/link-to-twitter", icon: "fab fa-twitter" },
         { title: "Twitch", path: "/link-to-twitch", icon: "fab fa-twitch" }
-        ]
+      ]
     };
+  },
+
+  methods: {
+    handleScroll() {
+      const offset = (window.innerHeight / 5);
+      this.scrollBackToTop = (document.documentElement.scrollTop > offset);
+    }
+  },
+
+  mounted() {
+    window.addEventListener("scroll", this.handleScroll);
+    window.dispatchEvent(new Event("scroll"));
+  },
+
+  destroyed() {
+    window.removeEventListener("scroll", this.handleScroll);
   }
 };
 </script>
