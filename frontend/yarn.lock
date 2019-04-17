@@ -7831,6 +7831,11 @@ vue@^2.6.6:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.9.tgz#415c1cc1a5ed00c8f0acdd0a948139d12b7ea6b3"
   integrity sha512-t1+tvH8hybPM86oNne3ZozCD02zj/VoZIiojOBPJLjwBn7hxYU5e1gBObFpq8ts1NEn1VhPf/hVXBDAJ3X5ljg==
 
+vuetify-toast-snackbar@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/vuetify-toast-snackbar/-/vuetify-toast-snackbar-0.1.6.tgz#12a37846cc5da212fae9bc7f821d6c9225b95cb6"
+  integrity sha512-H/V3yfscqG6Y12sPYXQOoE/Y3HXnJJrdTBWZTQFcAKNqxfc5HRxgnD+r3/By5YwNew23X4Vg0FImslT8TWeSGg==
+
 vuetify@^1.5.6:
   version "1.5.6"
   resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.5.6.tgz#4f53bd061b3930391088fc2833d7b9ecf43fecf0"

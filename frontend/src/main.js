@@ -20,6 +20,27 @@ import router from "./router";
 import store from "./store";
 import { mapActions, mapGetters } from "vuex";
 
+import VuetifyToast from 'vuetify-toast-snackbar'
+Vue.use(VuetifyToast, {
+  x: 'right', 
+  y: 'bottom', 
+  color: 'info', 
+  icon: 'info',
+  timeout: 0, 
+  dismissable: true, 
+  autoHeight: false, 
+  multiLine: false, 
+  vertical: false, 
+  shorts: {
+    custom: {
+      color: 'purple'
+    }
+  },
+  property: '$toast' 
+})
+
+import axios from "axios";
+
 new Vue({
   render: h => h(App),
   store,
@@ -31,6 +52,19 @@ new Vue({
     getGames: "speedruncom/getGames"
   }),
   created() {
+
+    /**
+     * Success and error events from the API
+     */
+    axios.interceptors.response.use(
+      response => response,
+      (error) => {
+        this.$toast.error('Something went wrong');
+        console.error(error);
+        return Promise.reject();
+      }
+    )
+
     this.getGames().then(() => {
       /* eslint-disable */
       if (process.env.NODE_ENV !== "production") {
