@@ -86,15 +86,19 @@ const getLeaderboard = (game, category, subCategories) => co(function* () {
  */
 const getWorldRecord = (game, category) => co(function* () {
   const thegame = yield getSoulsGame(game);
+
+  if (!thegame) {
+    const error = new Error('Game not found.');
+    error.code = 404;
+    throw error;
+  }
+
   const thecategory = thegame.categories.data.find(c => (c.id === category
     || c.name === category
     || c.weblink.split('#')[1].toLowerCase() === category.toLowerCase()));
 
-  /**
-   * Reject games not from the souls serie
-   */
-  if (!thegame || !thecategory) {
-    const error = new Error('Game or category not found.');
+  if (!thecategory) {
+    const error = new Error('Category not found.');
     error.code = 404;
     throw error;
   }
