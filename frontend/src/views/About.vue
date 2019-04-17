@@ -1,17 +1,33 @@
 <template>
   <v-container fluid>
-
     <v-layout column>
       <v-flex xs12 class="text-xs-center" mt-5>
-        <h1>About</h1>
-
-        <p>Speedsouls is a website about glitching. Thanks for stopping by.</p>
+        <div v-html="compiledMarkdown"></div>
       </v-flex>
     </v-layout>
-
   </v-container>
 </template>
 
 <script>
-  export default {}
+import axios from "axios";
+import marked from "marked";
+const GITHUB = "https://api.github.com";
+
+export default {
+  data() {
+    return {
+      content: "",
+    }
+  },
+  mounted() {
+    axios.get(`${GITHUB}/repos/CapitaineToinon/SpeedSouls/readme`).then(response => {
+      this.content = response.data.content;
+    })
+  },
+  computed: {
+    compiledMarkdown() {
+      return marked(window.atob(this.content), { sanitize: true })
+    }
+  }
+};
 </script>
