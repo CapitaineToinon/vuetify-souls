@@ -154,6 +154,13 @@ export default {
         value: "date"
       };
 
+      const vod_h = {
+        sortable: false,
+        align: "center",
+        text: "",
+        value: "vod"
+      };
+
       let headers = [rank_h, player_h];
 
       switch (this.$vuetify.breakpoint.name) {
@@ -170,7 +177,8 @@ export default {
             default_timing_h,
             ...others_timing_h,
             ...variables_h,
-            date_h
+            date_h,
+            vod_h,
           ];
           break;
       }
