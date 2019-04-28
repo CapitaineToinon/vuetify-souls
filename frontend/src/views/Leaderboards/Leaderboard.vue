@@ -164,7 +164,7 @@ export default {
 
     updateHash(category) {
       const split = category.weblink.split("#");
-      window.location.hash = split[1];
+      window.location.replace("#" + split[1]);
     },
 
     updateLeaderboard() {
