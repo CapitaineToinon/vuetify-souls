@@ -1,0 +1,72 @@
+<template>
+  <v-container>
+    <v-layout wrap>
+      <v-flex xs12>
+        <v-alert :value="true" type="info">Page not found. You are being redirected to {{ to }}</v-alert>
+      </v-flex>
+      <v-flex xs12>
+        <template>
+          <v-progress-linear v-model="progress"></v-progress-linear>
+        </template>
+      </v-flex>
+      <v-flex xs12>TOTO: Warn the user about the new wiki sub domain.</v-flex>
+      <v-flex
+        text-xs-center
+        xs12
+        class="pa-5"
+      ><v-btn color="success" @click="redirect">Redirect now</v-btn></v-flex>
+    </v-layout>
+  </v-container>
+</template>
+
+<script>
+import { setInterval, clearInterval } from "timers";
+const MEDIA_WIKI_URI = "https://www.speedsouls.com";
+const COUNTDOWN_DURATION = 10;
+
+export default {
+  data() {
+    return {
+      progress: 100,
+      countdown: COUNTDOWN_DURATION,
+      timer: null
+    };
+  },
+
+  computed: {
+    redirecting() {
+      return this.countdown === 0;
+    },
+    to() {
+      return `${MEDIA_WIKI_URI}${this.$route.fullPath}`;
+    }
+  },
+
+  methods: {
+    redirect() {
+      this.clear();
+      window.location.replace(this.to);
+    },
+    clear() {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+  },
+
+  mounted() {
+    this.timer = setInterval(() => {
+      this.countdown--;
+      this.progress = (this.countdown * 100) / COUNTDOWN_DURATION;
+
+      if (this.countdown < 1) {
+        this.redirect();
+      }
+    }, 1000);
+  },
+
+  beforeDestroy() {
+    this.clear();
+  }
+};
+</script>
+

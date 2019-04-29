@@ -41,6 +41,11 @@ export default new Router({
       path: "/live",
       name: "live",
       component: Live,
-    }
+    },
+    {
+      path: "**",
+      name: "redirect",
+      component: () => import("@/views/Redirect.vue"),
+    },
   ]
 });
