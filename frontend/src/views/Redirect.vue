@@ -10,11 +10,9 @@
         </template>
       </v-flex>
       <v-flex xs12>TOTO: Warn the user about the new wiki sub domain.</v-flex>
-      <v-flex
-        text-xs-center
-        xs12
-        class="pa-5"
-      ><v-btn color="success" @click="redirect">Redirect now</v-btn></v-flex>
+      <v-flex text-xs-center xs12 class="pa-5">
+        <v-btn color="success" @click="redirect">Redirect now</v-btn>
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -42,6 +40,16 @@ export default {
     }
   },
 
+  watch: {
+    $route() {
+      this.countdown = COUNTDOWN_DURATION;
+    },
+
+    countdown() {
+      this.progress = (this.countdown * 100) / COUNTDOWN_DURATION;
+    }
+  },
+
   methods: {
     redirect() {
       this.clear();
@@ -56,7 +64,6 @@ export default {
   mounted() {
     this.timer = setInterval(() => {
       this.countdown--;
-      this.progress = (this.countdown * 100) / COUNTDOWN_DURATION;
 
       if (this.countdown < 1) {
         this.redirect();
