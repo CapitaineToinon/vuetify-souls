@@ -2,8 +2,8 @@
   <v-tooltip top>
     <template v-slot:activator="{ on }">
       <v-hover>
-        <v-card 
-        v-on="on"
+        <v-card
+          v-on="on"
           slot-scope="{ hover }"
           :class="`elevation-${hover ? 12 : 2} stream-card`"
           @click="openStream(stream)"
@@ -14,12 +14,9 @@
             gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
           >
             <v-container fill-height fluid>
-              <v-layout text-xs-right fill-height>
-                <v-flex xs12 align-end flexbox class>
-                  <span class="font-weight-bold primary--text">
-                    {{ stream.viewers }}
-                    <v-icon small color="primary">person</v-icon>
-                  </span>
+              <v-layout align-center text-xs-center fill-height>
+                <v-flex xs12 align-end flexbox class="ml-4 mr-4">
+                  <span class="font-weight-bold headline">{{ stream.channel.display_name }}</span>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -35,7 +32,7 @@
                 <v-list-tile-title>
                   <div class="text-truncate">{{ stream.channel.status }}</div>
                 </v-list-tile-title>
-                <span class="grey--text text-truncate">{{ stream.channel.display_name }}</span>
+                <span class="grey--text text-truncate">{{ stream.game }}</span>
               </v-list-tile-content>
             </v-list-tile>
           </v-card-actions>
@@ -61,7 +58,7 @@ export default {
     openStream(stream) {
       window.open(stream.channel.url);
     }
-  },
+  }
 };
 </script>
 
