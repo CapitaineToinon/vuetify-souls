@@ -1,10 +1,7 @@
-const cachios = require('cachios');
 const co = require('co');
-
+const axios = require('axios');
 const BASE_URL = 'https://api.twitch.tv/kraken';
 const TEAM = 'speedsouls';
-const CACHE_DURATION = 5 * 60; // 5 minutes
-const TIMEOUT_LIMIT = 10 * 1000; // 10 seconds
 const HEADERS = {
   headers: {
     Accept: 'application/vnd.twitchtv.v5+json',
@@ -17,10 +14,7 @@ const HEADERS = {
  * ECHOS
  * =========================================>>
  */
-const echoAbsolute = url => cachios.get(url, HEADERS, {
-  timeout: TIMEOUT_LIMIT,
-  ttl: CACHE_DURATION,
-}).then(resp => resp.data);
+const echoAbsolute = url => axios.get(url, HEADERS).then(resp => resp.data);
 const e = path => echoAbsolute(`${BASE_URL}${path}`);
 
 /**

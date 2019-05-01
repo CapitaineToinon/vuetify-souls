@@ -1,10 +1,7 @@
-const cachios = require('cachios');
 const co = require('co');
-
+const axios = require('axios');
 const BASE_URL = 'https://www.speedrun.com/api/v1';
 const SERIE_NAME = 'souls';
-const CACHE_DURATION = 5 * 60; // 5 minutes
-const TIMEOUT_LIMIT = 10 * 1000; // 10 seconds
 
 const leaderboard = require('./leaderboards')
 
@@ -13,10 +10,7 @@ const leaderboard = require('./leaderboards')
  * ECHOS
  * =========================================>>
  */
-const echoAbsolute = url => cachios.get(url, {
-  timeout: TIMEOUT_LIMIT,
-  ttl: CACHE_DURATION,
-}).then(resp => resp.data);
+const echoAbsolute = url => axios.get(url).then(resp => resp.data);
 const e = path => echoAbsolute(`${BASE_URL}${path}`);
 
 /**

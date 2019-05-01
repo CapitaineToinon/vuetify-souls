@@ -8,8 +8,8 @@
     "debug": "DEBUG=backend:* npm run dev"
   },
   "dependencies": {
+    "apicache": "^1.4.0",
     "axios": "^0.18.0",
-    "cachios": "^2.0.0",
     "co": "^4.6.0",
     "cookie-parser": "~1.4.3",
     "debug": "~4.0.1",

@@ -7,6 +7,10 @@ const twitch = require('../bin/twitch');
 
 const BASE_URI = 'http://localhost:3000';
 
+const apicache = require('apicache');
+const cache = apicache.middleware;
+const CACHE_DURATION = '5 minutes';
+
 /**
  * API root
  */
@@ -33,7 +37,7 @@ router.get('/', (req, res) => {
  * List of souls games
  * https://www.speedrun.com/souls
  */
-router.get('/games', (req, res, next) => {
+router.get('/games', cache(CACHE_DURATION), (req, res, next) => {
   src.getSoulsGames()
     .then(games => res.json(games))
     .catch(err => next(err));
@@ -43,7 +47,7 @@ router.get('/games', (req, res, next) => {
  * Get a run
  * Limited to runs from the souls serie
  */
-router.get('/runs/:id', (req, res, next) => {
+router.get('/runs/:id', cache(CACHE_DURATION), (req, res, next) => {
   src.getRun(req.params.id)
     .then(run => res.json(run))
     .catch(err => next(err));
@@ -53,7 +57,7 @@ router.get('/runs/:id', (req, res, next) => {
  * Get leaderboards for a game/category
  * Limited to games from the souls serie
  */
-router.get('/leaderboard/:game/:category', (req, res, next) => {
+router.get('/leaderboard/:game/:category', cache(CACHE_DURATION), (req, res, next) => {
   const subCategories = Object.entries(req.query)
     .filter((item, key) => Object.keys(req.query)[key].startsWith('var-'))
     .map(([key, value]) => `${key}=${value}`);
@@ -68,7 +72,7 @@ router.get('/leaderboard/:game/:category', (req, res, next) => {
  * Limited to games from the souls serie
  * https://www.twitch.tv/team/speedsouls
  */
-router.get('/liverunners', (req, res, next) => {
+router.get('/liverunners', cache(CACHE_DURATION), (req, res, next) => {
   co(function* () {
     const games = yield src.getSoulsGames();
     const streams = yield twitch.getLiveStreams();
@@ -85,7 +89,7 @@ router.get('/liverunners', (req, res, next) => {
 /**
  * Get Team
  */
-router.get('/team', (req, res, next) => {
+router.get('/team', cache(CACHE_DURATION), (req, res, next) => {
   co(function* () {
     const team = yield twitch.getSpeedSoulsTeam();
     res.json(team);
@@ -96,7 +100,7 @@ router.get('/team', (req, res, next) => {
  * Get world record for a game/category
  * Limited to games from the souls serie
  */
-router.get('/wr/:game/:category', (req, res, next) => {
+router.get('/wr/:game/:category', cache(CACHE_DURATION), (req, res, next) => {
   const game = req.params.game;
   const category = req.params.category;
   if (!category) {
@@ -113,7 +117,7 @@ router.get('/wr/:game/:category', (req, res, next) => {
  * Include misc=true in the query for misc categories
  * Limited to games from the souls serie
  */
-router.get('/wr/:game', (req, res, next) => {
+router.get('/wr/:game', cache(CACHE_DURATION), (req, res, next) => {
   const game = req.params.game;
   if (!game) {
     next();
@@ -129,7 +133,7 @@ router.get('/wr/:game', (req, res, next) => {
  * Get world record for all souls games
  * Include misc=true in the query for misc categories
  */
-router.get('/wr', (req, res, next) => {
+router.get('/wr', cache(CACHE_DURATION), (req, res, next) => {
   co(function* () {
     const misc = !!(req.query.misc) && req.query.misc === 'true';
     const games = yield src.getSoulsGames();
