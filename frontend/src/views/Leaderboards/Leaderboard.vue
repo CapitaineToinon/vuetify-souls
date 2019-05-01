@@ -141,7 +141,13 @@ export default {
     },
 
     onRunClick(run) {
-      window.open(run.run.weblink);
+      this.$router.push({
+        name: 'run',
+        params: {
+          abbreviation: this.game.abbreviation,
+          id: run.run.id
+        }
+      })
     },
 
     onPlayerClick(player) {

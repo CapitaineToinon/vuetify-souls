@@ -29,7 +29,10 @@ const getLeaderboard = (game, category, subCategories) =>
     return leaderboard;
   });
 
+const getRun = (id) =>  e(`/runs/${id}`).then(d => d.data);
+
 export default {
   getGames,
   getLeaderboard,
+  getRun,
 };

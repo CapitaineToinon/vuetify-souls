@@ -30,7 +30,12 @@ export default new Router({
           path: ":abbreviation",
           name: "leaderboard",
           component: () => import("@/views/Leaderboards/Leaderboard.vue")
-        }
+        },
+        {
+          path: ":abbreviation/:id",
+          name: "run",
+          component: () => import("@/views/Run.vue"),    
+        },
       ]
     },
     {
