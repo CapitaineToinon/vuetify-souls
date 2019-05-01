@@ -41,8 +41,8 @@
             @onPlayerClick="onPlayerClick"
           ></leaderboard>
         </v-flex>
-        <v-flex v-else xs12 sm9 text-xs-center>
-          <v-progress-circular class="ma-5" indeterminate color="red"></v-progress-circular>
+        <v-flex v-else xs12 text-xs-center>
+          <v-progress-circular class="ma-5" indeterminate color="primary"></v-progress-circular>
         </v-flex>
       </v-layout>
     </v-flex>
