@@ -6,6 +6,8 @@ const SERIE_NAME = 'souls';
 const CACHE_DURATION = 5 * 60; // 5 minutes
 const TIMEOUT_LIMIT = 10 * 1000; // 10 seconds
 
+const leaderboard = require('./leaderboards')
+
 /**
  * =========================================>>
  * ECHOS
@@ -76,8 +78,11 @@ const getLeaderboard = (game, category, subCategories) => co(function* () {
   const url = `/leaderboards/${game}/category/${category}`
     + `?embed=players,variables&${subCategories.join('&')}`;
 
-  const leaderboard = yield e(url).then(l => l.data);
-  return leaderboard;
+  const data = yield e(url).then(l => l.data);
+  const { runs, players } = data;
+  const thecategory = thegame.categories.data.find(c => c.id === data.category);
+
+  return leaderboard.formatLeaderboardsData(thegame, thecategory, runs, players.data);
 });
 
 /**

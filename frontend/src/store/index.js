@@ -7,16 +7,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules,
-  state: {
-    timingMethodsNames: {
-      ingame: "In-Game Time",
-      realtime: "Real Time",
-      realtime_noloads: "Time without loads"
-    }
-  },
+  state: {},
   mutations: {},
   actions: {},
-  getters: {
-    timingMethodsNames: state => state.timingMethodsNames,
-  }
+  getters: {}
 });

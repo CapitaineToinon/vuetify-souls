@@ -35,10 +35,8 @@
         </v-flex>
         <v-flex v-else-if="leaderboard !== null" xs12>
           <leaderboard
-            :game="game"
-            :category="category"
+            :headers="leaderboard.headers"
             :runs="leaderboard.runs"
-            :players="leaderboard.players.data"
             @onRunClick="onRunClick"
             @onPlayerClick="onPlayerClick"
           ></leaderboard>
@@ -69,7 +67,7 @@ export default {
       game: null,
       category: null,
       subCategories: null,
-      leaderboard: null
+      leaderboard: null,
     };
   },
 
@@ -155,7 +153,6 @@ export default {
     },
 
     getCategoryFromHash() {
-      // could return undefined
       return this.game.categories.data.find(category => {
         const split = category.weblink.split("#");
         return window.location.hash === `#${split[1]}`;
@@ -176,14 +173,17 @@ export default {
 
       api
         .getLeaderboard(this.game.id, this.category.id, this.subCategories)
-        .then(leaderboard => {
+        .then(data => {
           /**
            * Only updates the leaderboards if
            * game, category and didn't change
            * since the start of the request
            */
           if (gameid === this.game.id && categoryid === this.category.id) {
-            this.leaderboard = leaderboard;
+            this.leaderboard = {
+              headers: data.headers,
+              runs: data.runs
+            };
           }
         })
         .catch(error => {
