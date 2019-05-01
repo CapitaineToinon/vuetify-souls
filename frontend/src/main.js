@@ -11,6 +11,12 @@ import "flag-icon-css/css/flag-icon.min.css";
 import theme from "./theme";
 Vue.use(Vuetify, { theme });
 
+import VueYoutube from 'vue-youtube'
+import LoadScript from 'vue-plugin-load-script';
+ 
+Vue.use(VueYoutube);
+Vue.use(LoadScript);
+
 import filters from "./api/filters";
 Object.keys(filters).map(key => {
   Vue.filter(key, filters[key]);
