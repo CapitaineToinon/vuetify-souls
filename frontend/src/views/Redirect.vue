@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-layout wrap>
+    <v-layout wrap v-if="!redirecting">
       <v-flex xs12>
         <v-alert :value="true" type="info">Page not found. You are being redirected to {{ to }}</v-alert>
       </v-flex>
@@ -12,6 +12,14 @@
       <v-flex xs12>TOTO: Warn the user about the new wiki sub domain.</v-flex>
       <v-flex text-xs-center xs12 class="pa-5">
         <v-btn color="success" @click="redirect">Redirect now</v-btn>
+      </v-flex>
+    </v-layout>
+    <v-layout v-else text-xs-center wrap>
+      <v-flex xs12>
+        <a :href="to">Click here if you are not being redirected automatically.</a>
+      </v-flex>
+      <v-flex xs12>
+        <loader class="ma-5"/>
       </v-flex>
     </v-layout>
   </v-container>
@@ -33,7 +41,7 @@ export default {
 
   computed: {
     redirecting() {
-      return this.countdown === 0;
+      return this.countdown < 0;
     },
     to() {
       return `${MEDIA_WIKI_URI}${this.$route.fullPath}`;
@@ -52,6 +60,7 @@ export default {
 
   methods: {
     redirect() {
+      this.countdown = -1;
       this.clear();
       window.location.replace(this.to);
     },
@@ -65,7 +74,7 @@ export default {
     this.timer = setInterval(() => {
       this.countdown--;
 
-      if (this.countdown < 1) {
+      if (this.countdown < 0) {
         this.redirect();
       }
     }, 1000);
