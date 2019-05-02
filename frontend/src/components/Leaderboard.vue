@@ -14,20 +14,7 @@
         </td>
         <td class="text-xs-center">
           <div v-for="(player, i) in props.item.players" :key="`player-${i}`">
-            <v-tooltip v-if="player.country" bottom>
-              <template v-slot:activator="{ on }">
-                <span v-on="on" :class="`flag-icon flag-icon-${player.country.code}`"></span>
-              </template>
-              <span>{{ player.country.names.international }}</span>
-            </v-tooltip>
-            <span
-              v-if="player.weblink"
-              @click.stop="onPlayerClick(player)"
-              target="_blank"
-              class="font-weight-bold username ml-1"
-              v-bind:style="[player.nameStyle]"
-            >{{ player.name }}</span>
-            <span v-else>{{ player.name }}</span>
+            <player-name :player="player"></player-name>
           </div>
         </td>
         <td class="text-xs-center hidden-lg-and-up">{{ props.item.primary_t | formatTime }}</td>
@@ -54,8 +41,13 @@
 <script>
 import filters from "@/api/filters.js";
 import { mapGetters } from "vuex";
+import PlayerName from "@/components/PlayerName";
 
 export default {
+  components: {
+    PlayerName,
+  },
+
   props: {
     headers: {
       type: Array,
@@ -79,29 +71,13 @@ export default {
     o: value => filters.ordinal(value),
 
     onRunClick(run) {
-      // const players = run.run.players.map(player => {
-      //   return player.id === undefined
-      //     ? player
-      //     : this.players.find(p => p.id === player.id);
-      // });
-
-      // run.run.players = players;
       this.$emit("onRunClick", run);
-    },
-
-    onPlayerClick(player) {
-      this.$emit("onPlayerClick", player);
-    },
-
+    }
   }
 };
 </script>
 
 <style scoped>
-.username {
-  color: #e0e0e0;
-}
-
 .run-row {
   cursor: pointer;
 }

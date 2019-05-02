@@ -7,11 +7,14 @@
         </div>
         <v-card-title>
           <div>
-            <span class="headline font-weight-bold">{{ title }}</span>
+            <span class="headline font-weight-bold">
+              {{ category.name }} {{ runTime }} by
+              <player-name v-for="(player, index) in players" :key="index" :player="player"></player-name>
+            </span>
           </div>
         </v-card-title>
         <v-card-actions>
-          <v-btn flat color="primary" :href="data.weblink" target="_blank">View on Speedrun.com</v-btn>
+          <v-btn flat color="primary" :href="data.weblink" target="_blank">watch on speedrun.com</v-btn>
         </v-card-actions>
       </v-card>
     </v-flex>
@@ -28,10 +31,12 @@ import api from "@/api/speedruncom.js";
 import RunVideo from "@/components/RunVideo";
 import filters from "@/api/filters.js";
 import { mapActions } from "vuex";
+import PlayerName from "@/components/PlayerName";
 
 export default {
   components: {
-    RunVideo
+    RunVideo,
+    PlayerName
   },
 
   data() {
@@ -50,22 +55,23 @@ export default {
     category() {
       return this.data.category;
     },
+    runTime() {
+      return filters.formatTime(this.data.times.primary_t);
+    },
     players() {
-      return this.data.players.data;
+      return this.data.players;
     },
     videos() {
       return this.data.videos.links;
     },
     title() {
-      const categoryName = this.category.name;
-      const runTime = filters.formatTime(this.data.times.primary_t);
       const playerNames = this.players
         .map(player =>
           player.rel === "user" ? player.names.international : player.name
         )
         .join(", ");
 
-      return `${categoryName} ${runTime} by ${playerNames}`;
+      return `${this.category.name} ${this.runTime} by ${playerNames}`;
     }
   },
 
@@ -90,6 +96,8 @@ export default {
             run: this.title
           })
         );
+
+        window.document.title = `SpeedSouls - ${this.title}`;
       })
       .catch(error => {
         this.$router.push({

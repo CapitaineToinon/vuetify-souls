@@ -38,7 +38,6 @@
             :headers="leaderboard.headers"
             :runs="leaderboard.runs"
             @onRunClick="onRunClick"
-            @onPlayerClick="onPlayerClick"
           ></leaderboard>
         </v-flex>
         <v-flex v-else xs12 text-xs-center>
@@ -154,10 +153,6 @@ export default {
       });
     },
 
-    onPlayerClick(player) {
-      window.open(player.weblink);
-    },
-
     onSubCategoryChange() {
       this.updateLeaderboard();
     },
@@ -229,6 +224,8 @@ export default {
         run: null,
       })
     );
+
+    window.document.title = `SpeedSouls - ${this.game.names.international} Leaderboards`;
   }
 };
 </script>
