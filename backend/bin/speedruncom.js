@@ -38,8 +38,8 @@ const getSoulsGame = game => getSoulsGames()
  * Limited to runs from the souls serie
  */
 const getRun = id => co(function* () {
-  const run = yield e(`/runs/${id}?embed=players`);
-  const game = yield getSoulsGame(run.data.game);
+  const run = yield e(`/runs/${id}?embed=players`).then(d => d.data);
+  const game = yield getSoulsGame(run.game);
 
   /**
    * Reject runs not from the souls serie
@@ -50,7 +50,13 @@ const getRun = id => co(function* () {
     throw error;
   }
 
-  return run;
+  const category = game.categories.data.find(c => c.id === run.category);
+
+  return {
+    ...run,
+    game,
+    category,
+  }
 });
 
 /**
