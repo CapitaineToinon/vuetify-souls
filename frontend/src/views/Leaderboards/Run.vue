@@ -11,6 +11,7 @@
               {{ category.name }} {{ runTime }} by
               <player-name v-for="(player, index) in players" :key="index" :player="player"></player-name>
             </span>
+            <span class="grey--text" v-if="data.comment"><br>{{ data.comment }}</span>
           </div>
         </v-card-title>
         <v-card-actions>
