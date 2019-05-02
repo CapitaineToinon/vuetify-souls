@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <breadcrumbs/>
+    <breadcrumbs class="px-0"/>
     <router-view></router-view>
   </v-container>
 </template>

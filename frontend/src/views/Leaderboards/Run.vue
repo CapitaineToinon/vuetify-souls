@@ -1,31 +1,26 @@
 <template>
-  <div>
-    <v-layout v-if="isLoaded" wrap>
-      <v-flex xs12>
-        <v-card class="mx-1">
-          <run-video class="video" v-for="(link, i) in videos" :key="i" :url="link.uri"></run-video>
-          <v-card-title>
-            <div>
-              <span class="grey--text">{{ title }}</span>
-              <br>
-              <span>Whitehaven Beach</span>
-              <br>
-              <span>Whitsunday Island, Whitsunday Islands</span>
-            </div>
-          </v-card-title>
-          <v-card-actions>
-            <v-btn flat color="orange">Share</v-btn>
-            <v-btn flat color="orange">Explore</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-flex>
-    </v-layout>
-    <v-layout v-else>
-      <v-flex xs12 text-xs-center>
-        <v-progress-circular class="ma-5" indeterminate color="primary"></v-progress-circular>
-      </v-flex>
-    </v-layout>
-  </div>
+  <v-layout v-if="isLoaded" wrap>
+    <v-flex xs12>
+      <v-card class="run-card">
+        <div v-for="(link, i) in videos" :key="i" class="video">
+          <run-video :url="link.uri"></run-video>
+        </div>
+        <v-card-title>
+          <div>
+            <span class="headline font-weight-bold">{{ title }}</span>
+          </div>
+        </v-card-title>
+        <v-card-actions>
+          <v-btn flat color="primary" :href="data.weblink" target="_blank">View on Speedrun.com</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-flex>
+  </v-layout>
+  <v-layout v-else>
+    <v-flex xs12 text-xs-center>
+      <v-progress-circular class="ma-5" indeterminate color="primary"></v-progress-circular>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
