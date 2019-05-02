@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   data() {
@@ -51,6 +51,10 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      setBreadcrumbs: "breadcrumbs/setBreadcrumbs"
+    }),
+
     openLeaderboards(abbreviation) {
       this.$router.push({
         name: "leaderboard",
@@ -59,6 +63,13 @@ export default {
         }
       });
     }
+  },
+
+  mounted() {
+    /**
+     * Update breadcrumbs
+     */
+    this.setBreadcrumbs(this.$breadcrumbs("gamelist"));
   }
 };
 </script>

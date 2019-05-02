@@ -2,6 +2,10 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 import App from "./App.vue";
 
+import VueBreadcrumbs from 'vuejs2-breadcrumbs'
+import options from '@/api/breadcrumbs.js'
+Vue.use(VueBreadcrumbs, options);
+
 Vue.config.productionTip = false;
 
 import "vuetify/dist/vuetify.min.css";
@@ -13,7 +17,7 @@ Vue.use(Vuetify, { theme });
 
 import VueYoutube from 'vue-youtube'
 import LoadScript from 'vue-plugin-load-script';
- 
+
 Vue.use(VueYoutube);
 Vue.use(LoadScript);
 
@@ -28,21 +32,21 @@ import { mapActions, mapGetters } from "vuex";
 
 import VuetifyToast from 'vuetify-toast-snackbar'
 Vue.use(VuetifyToast, {
-  x: 'right', 
-  y: 'bottom', 
-  color: 'info', 
+  x: 'right',
+  y: 'bottom',
+  color: 'info',
   icon: 'info',
-  timeout: 0, 
-  dismissable: true, 
-  autoHeight: false, 
-  multiLine: false, 
-  vertical: false, 
+  timeout: 0,
+  dismissable: true,
+  autoHeight: false,
+  multiLine: false,
+  vertical: false,
   shorts: {
     custom: {
       color: 'purple'
     }
   },
-  property: '$toast' 
+  property: '$toast'
 })
 
 import axios from "axios";
@@ -85,11 +89,11 @@ new Vue({
 
   mounted() {
     this.updateStreams()
-    .then(() => {
-      console.log("Streams", this.streams);
-    })
-    .catch(() => {
+      .then(() => {
+        console.log("Streams", this.streams);
+      })
+      .catch(() => {
 
-    })
+      })
   }
 }).$mount("#app");

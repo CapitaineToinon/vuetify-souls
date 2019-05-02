@@ -4,7 +4,6 @@ import Base from "@/views/Base.vue";
 import About from "@/views/About.vue";
 import Live from "@/views/Live.vue";
 import Leaderboard from "@/views/Leaderboards/Index.vue";
-import GamesList from "@/views/Leaderboards/GamesList.vue";
 
 Vue.use(Router);
 
@@ -19,12 +18,12 @@ export default new Router({
     },
     {
       path: "/leaderboards",
-      component: Leaderboard, //() => import("@/views/Leaderboards/Index.vue"),
+      component: Leaderboard,
       children: [
         {
           path: "",
           name: "gamelist",
-          component: GamesList, // () => import("@/views/Leaderboards/GamesList.vue")
+          component: () => import("@/views/Leaderboards/GamesList.vue")
         },
         {
           path: ":abbreviation",
@@ -34,7 +33,7 @@ export default new Router({
         {
           path: ":abbreviation/:id",
           name: "run",
-          component: () => import("@/views/Run.vue"),    
+          component: () => import("@/views/Leaderboards/Run.vue")
         },
       ]
     },

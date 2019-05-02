@@ -53,7 +53,7 @@
 import api from "../../api/speedruncom.js";
 import CategoriesListing from "../../components/CategoriesListing";
 import Leaderboard from "../../components/Leaderboard";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
@@ -67,7 +67,7 @@ export default {
       game: null,
       category: null,
       subCategories: null,
-      leaderboard: null,
+      leaderboard: null
     };
   },
 
@@ -131,6 +131,10 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      setBreadcrumbs: "breadcrumbs/setBreadcrumbs"
+    }),
+
     onCategoryClick(category) {
       /**
        * This will trigger the category watcher, eventually
@@ -142,12 +146,12 @@ export default {
 
     onRunClick(run) {
       this.$router.push({
-        name: 'run',
+        name: "run",
         params: {
           abbreviation: this.game.abbreviation,
           id: run.run.id
         }
-      })
+      });
     },
 
     onPlayerClick(player) {
@@ -215,6 +219,16 @@ export default {
      * updating the leaderboards
      */
     this.game = game;
+
+    /**
+     * Update breadcrumbs
+     */
+    this.setBreadcrumbs(
+      this.$breadcrumbs("leaderboard", {
+        game: this.game,
+        run: null,
+      })
+    );
   }
 };
 </script>
