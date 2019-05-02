@@ -4,7 +4,7 @@
       <CategoriesListing
         :categories="game.categories.data"
         @onCategoryClick="onCategoryClick"
-        class="mr-3"
+        class="mb-2 mx-1"
       ></CategoriesListing>
     </v-flex>
 
@@ -17,7 +17,7 @@
             :key="subc.id"
             mandatory
             @change="onSubCategoryChange"
-            class="mb-3"
+            class="mb-2 mx-1"
           >
             <v-btn
               block
@@ -38,6 +38,7 @@
             :headers="leaderboard.headers"
             :runs="leaderboard.runs"
             @onRunClick="onRunClick"
+            class="mx-1"
           ></leaderboard>
         </v-flex>
         <v-flex v-else xs12 text-xs-center>
