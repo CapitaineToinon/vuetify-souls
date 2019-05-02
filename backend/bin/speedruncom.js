@@ -51,11 +51,13 @@ const getRun = id => co(function* () {
   }
 
   const category = game.categories.data.find(c => c.id === run.category);
+  const players = run.players.data.map(player => leaderboard.formatPlayer(player));
 
   return {
     ...run,
     game,
     category,
+    players,
   }
 });
 
