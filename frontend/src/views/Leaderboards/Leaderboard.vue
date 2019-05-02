@@ -41,7 +41,7 @@
           ></leaderboard>
         </v-flex>
         <v-flex v-else xs12 text-xs-center>
-          <v-progress-circular class="ma-5" indeterminate color="primary"></v-progress-circular>
+          <loader/>
         </v-flex>
       </v-layout>
     </v-flex>

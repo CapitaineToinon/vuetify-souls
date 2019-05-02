@@ -7,7 +7,7 @@
     </v-layout>
     <v-layout v-else>
       <v-flex xs12 text-xs-center>
-        <v-progress-circular class="ma-5" indeterminate color="primary"></v-progress-circular>
+        <loader/>
       </v-flex>
     </v-layout>
   </v-container>

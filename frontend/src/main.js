@@ -2,6 +2,9 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 import App from "./App.vue";
 
+import Loader from "@/components/Loader";
+Vue.component("loader", Loader);
+
 import VueBreadcrumbs from 'vuejs2-breadcrumbs'
 import options from '@/api/breadcrumbs.js'
 Vue.use(VueBreadcrumbs, options);
