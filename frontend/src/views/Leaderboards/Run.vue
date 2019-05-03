@@ -60,7 +60,7 @@ export default {
       return this.data.game.data;
     },
     category() {
-      return this.data.category;
+      return this.data.category.data;
     },
     runTime() {
       return filters.formatTime(this.data.times.primary_t);
@@ -75,12 +75,7 @@ export default {
       return this.data.videos ? this.data.videos.links : [];
     },
     title() {
-      const playerNames = this.players
-        .map(player =>
-          player.rel === "user" ? player.names.international : player.name
-        )
-        .join(", ");
-
+      const playerNames = this.players.map(player => player.name).join(", ");
       return `${this.category.name} ${this.runTime} by ${playerNames}`;
     }
   },
