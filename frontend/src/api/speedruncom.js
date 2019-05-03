@@ -1,12 +1,10 @@
-import { BASE_URL } from "./consants";
 import axios from "axios";
 import co from "co";
-
 
 /**
  * Relative api echo
  */
-const e = path => axios.get(`${BASE_URL}${path}`);
+const e = path => axios.get(`${process.env.VUE_APP_API_BASE_URL}${path}`);
 
 /**
  * Get souls games
