@@ -1,10 +1,10 @@
 <template>
-  <div v-if="isYouTube" class="speedsouls-video">
-    <youtube :video-id="getYoutubeId()" :player-vars="{ autoplay: autoPlay }"></youtube>
+  <div v-if="youtubeID" class="speedsouls-video">
+    <youtube :video-id="youtubeID" :player-vars="{ autoplay: autoPlay }"></youtube>
   </div>
-  <div v-else-if="isTwitch" class="speedsouls-video">
+  <div v-else-if="twitchID" class="speedsouls-video">
     <iframe
-      :src="`https://player.twitch.tv/?video=${getTwitchId()}&autoplay=${autoPlay}`"
+      :src="`https://player.twitch.tv/?video=${twitchID}&autoplay=${autoPlay}`"
       frameborder="0"
       scrolling="no"
       allowfullscreen="true"
@@ -16,15 +16,21 @@
 </template>
 
 <script>
-// https://github.com/streamlink/streamlink/blob/master/src/streamlink/plugins/twitch.py
 /* eslint-disable-next-line */
-const TWITCH_REGEX = /http(?:s)?:\/\/(?:(?::?[\w\-]+)\.)?twitch.tv\/(?:videos\/(:?\d+)|(?::?[^/]+))(?:\/(?::?[bcv])(?:ideo)?\/(?::?\d+))?(?:\/(?::?[\w]+))?/;
+const TWITCH_REGEX = /(?:http(?:s)?:\/\/(?:www.)?)?twitch.tv\/(?:(?:.+?)\/v|videos)\/([0-9]+)/;
 
 export default {
+  data() {
+    return {
+      youtubeID: null,
+      twitchID: null,
+    }
+  },
+
   props: {
     autoPlay: {
       type: Boolean,
-      default: false,
+      default: false
     },
     url: {
       type: String,
@@ -32,26 +38,20 @@ export default {
     }
   },
 
-  computed: {
-    isYouTube() {
-      return this.getYoutubeId() !== null;
-    },
-    isTwitch() {
-      return this.getTwitchId() !== null;
-    }
-  },
-
   methods: {
-    getYoutubeId() {
+    getYouTubeID() {
       return this.$youtube.getIdFromUrl(this.url);
     },
-    getTwitchId() {
-      const matches = this.url.match(TWITCH_REGEX);
-      return matches ? matches[1] : null;
+    getTwitchID() {
+      const matches = TWITCH_REGEX.exec(this.url);
+      return matches && matches[1] ? matches[1] : null;
     }
   },
 
-  mounted() {}
+  beforeMount() {
+    this.youtubeID = this.getYouTubeID();
+    this.twitchID = this.getTwitchID();
+  },
 };
 </script>
 

@@ -97,6 +97,8 @@ export default {
       .then(data => {
         this.data = data;
 
+        console.log(this.data);
+
         /**
          * Update breadcrumbs
          */
