@@ -9,7 +9,7 @@ export default new Vuex.Store({
   modules,
 
   state: {
-    darktheme: JSON.parse(localStorage.getItem('darktheme')) || false,
+    darktheme: JSON.parse(localStorage.getItem('darktheme')) || true,
   },
 
   mutations: {
