@@ -54,6 +54,16 @@ router.get('/runs/:id', cache(CACHE_DURATION), (req, res, next) => {
 });
 
 /**
+ * Get a run
+ * Limited to runs from the souls serie
+ */
+router.get('/recentruns', cache(CACHE_DURATION), (req, res, next) => {
+  src.getRecentRuns()
+    .then(run => res.json(run))
+    .catch(err => next(err));
+});
+
+/**
  * Get leaderboards for a game/category
  * Limited to games from the souls serie
  */

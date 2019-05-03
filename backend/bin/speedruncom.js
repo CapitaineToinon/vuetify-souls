@@ -62,6 +62,38 @@ const getRun = id => co(function* () {
 });
 
 /**
+ * Get recent runs for a game
+ */
+const getRecentRunsByGame = g => co(function* () {
+  const game = yield getSoulsGame(g);
+
+  /**
+   * Reject runs not from the souls serie
+   */
+  if (!game) {
+    const error = new Error('Game not found.');
+    error.code = 404;
+    throw error;
+  }
+
+  const runs = yield e(`/runs?status=verified&orderby=verify-date&direction=desc&game=${game.id}`).then(d => d.data);
+  return runs;
+})
+
+/**
+ * Get recent souls runs
+ */
+const getRecentRuns = () => co(function* () {
+  const games = yield getSoulsGames();
+  let runs = yield games.map(game => getRecentRunsByGame(game.id));
+  runs = runs.reduce((a, val) => [...a, ...val]);
+  runs.sort((a, b) => {
+    return new Date(b.status["verify-date"]) - new Date(a.status["verify-date"]);
+  });
+  return runs;
+})
+
+/**
  * Get leaderboard for a game/category
  * If the game has subcategories it needs to be specified
  */
@@ -152,6 +184,8 @@ module.exports = {
   getSoulsGames,
   getLeaderboard,
   getRun,
+  getRecentRuns,
+  getRecentRunsByGame,
   getWorldRecord,
   getWorldRecords,
 };
