@@ -78,6 +78,10 @@ export default {
 </script>
 
 <style scoped>
+.game-card {
+  cursor: pointer;
+}
+
 .repeating-gradient {
   background-image: repeating-linear-gradient(
     -45deg,
