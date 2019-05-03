@@ -2,16 +2,17 @@
   <v-layout v-if="isLoaded" wrap>
     <v-flex xs12>
       <v-card class="run-card">
-        <div v-for="(link, i) in videos" :key="i" class="video">
-          <run-video :url="link.uri"></run-video>
-        </div>
+        <run-video v-for="(link, i) in videos" :key="i" :url="link.uri"></run-video>
         <v-card-title>
           <div>
             <span class="headline font-weight-bold">
               {{ category.name }} {{ runTime }} by
               <player-name v-for="(player, index) in players" :key="index" :player="player"></player-name>
             </span>
-            <span class="grey--text" v-if="data.comment"><br>{{ data.comment }}</span>
+            <span class="grey--text" v-if="data.comment">
+              <br>
+              {{ data.comment }}
+            </span>
           </div>
         </v-card-title>
         <v-card-actions>
@@ -111,9 +112,3 @@ export default {
   }
 };
 </script>
-
-<style>
-iframe {
-  width: 100%;
-}
-</style>

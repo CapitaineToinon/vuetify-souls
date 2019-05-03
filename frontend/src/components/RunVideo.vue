@@ -1,6 +1,10 @@
 <template>
-  <youtube v-if="isYouTube" :video-id="getYoutubeId()"></youtube>
-  <vue-twitch-player v-else-if="isTwitch" :video="getTwitchId()"></vue-twitch-player>
+  <div v-if="isYouTube" class="speedsouls-video">
+    <youtube :video-id="getYoutubeId()"></youtube>
+  </div>
+  <div v-else-if="isTwitch" class="speedsouls-video">
+    <vue-twitch-player :video="getTwitchId()"></vue-twitch-player>
+  </div>
   <div v-else>{{ url }}</div>
 </template>
 
@@ -44,3 +48,24 @@ export default {
   mounted() {}
 };
 </script>
+
+<style>
+/**
+ * Scoped CSS Doesn't work on dynamic content 
+ * https://github.com/vuejs/vue-loader/issues/559
+ */
+.speedsouls-video {
+  width: 100%;
+  overflow: hidden;
+  padding-top: 56.25%;
+  position: relative;
+}
+
+.speedsouls-video iframe {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+</style>
