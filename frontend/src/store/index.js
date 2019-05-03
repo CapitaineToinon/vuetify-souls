@@ -19,9 +19,16 @@ export default new Vuex.Store({
     }
   },
 
+
   actions: {
-    setDarkTheme({ commit }, value) {
-      commit('setDarkTheme', value);
+    init({ commit }) {
+      commit('setDarkTheme', JSON.parse(localStorage.getItem('darktheme')) || true);
+    },
+    enableDarkTheme({ commit }) {
+      commit('setDarkTheme', true);
+    },
+    disableDarkTheme({ commit }) {
+      commit('setDarkTheme', false);
     }
   },
 

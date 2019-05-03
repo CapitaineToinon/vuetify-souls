@@ -125,6 +125,7 @@
 
     <v-content>
       <router-view></router-view>
+      <dark-theme-modal @onAgree="onAgree" @onDisagree="onDisagree" :dialog="dialog"></dark-theme-modal>
     </v-content>
 
     <v-fab-transition>
@@ -150,11 +151,17 @@
 </template>
 
 <script>
+import DarkThemeModal from "@/components/DarkThemeModal";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
+  components: {
+    DarkThemeModal
+  },
+
   data() {
     return {
+      dialog: false,
       scrollBackToTop: false,
       appTitle: "speedsouls",
       sidebar: false,
@@ -186,17 +193,38 @@ export default {
 
   methods: {
     ...mapActions({
-      setDarkTheme: "setDarkTheme",
+      enableDarkTheme: "enableDarkTheme",
+      disableDarkTheme: "disableDarkTheme",
+      init: "init",
     }),
 
+    onAgree() {
+      this.disableDarkTheme();
+      this.dialog = false;
+    },
+
+    onDisagree() { 
+      this.dialog = false;
+    },
+
     toggleDarkTheme() {
-      this.setDarkTheme(!this.dark);
+      if (this.dark) {
+        this.dialog = true;
+      } else {
+        this.enableDarkTheme();
+      }
+
+      this.sidebar = false;
     },
 
     handleScroll() {
       const offset = window.innerHeight / 5;
       this.scrollBackToTop = document.documentElement.scrollTop > offset;
     }
+  },
+
+  beforeMount() {
+    // this.init();
   },
 
   mounted() {
