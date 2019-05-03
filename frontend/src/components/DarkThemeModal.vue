@@ -2,22 +2,20 @@
   <v-layout row justify-center>
     <v-dialog v-model="dialog" persistent max-width="400px">
       <v-card>
-        <v-card-title class="headline">🤖</v-card-title>
-        <v-card-text>Disabling dark theme, huh? Sure thing. Since this is such an unusual request, we just need to make sure you're human.</v-card-text>
-        <v-flex xs12 text-xs-center class="px-3 mb-3">
-          <vue-recaptcha
-            id="memes"
-            ref="recaptcha"
-            theme="dark"
-            @verify="onVerify"
-            @expired="onExpired"
-            :sitekey="sitekey"
-          ></vue-recaptcha>
-        </v-flex>
+        <v-card-title class="headline">Security warning</v-card-title>
+        <v-card-text>
+          <v-layout wrap>
+            <v-flex xs12 class="mb-3">{{ warning }}</v-flex>
+            <v-flex xs12 text-xs-center class>
+              <fake-captcha @onValid="valid = true" ref="captcha"></fake-captcha>
+            </v-flex>
+          </v-layout>
+        </v-card-text>
+
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary darken-1" flat @click="Disagree">Cancel</v-btn>
-          <v-btn color="success darken-1" :disabled="!valid" @click="Agree" flat>Confirm</v-btn>
+          <v-btn color="primary darken-1" @click="CANCEL">Cancel</v-btn>
+          <v-btn color="success darken-1" :disabled="!valid" @click="OK">Confirm</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -25,17 +23,17 @@
 </template>
 
 <script>
-import VueRecaptcha from "vue-recaptcha";
+import FakeCaptcha from "@/components/FakeCaptcha";
 
 export default {
   components: {
-    VueRecaptcha
+    FakeCaptcha
   },
 
   data() {
     return {
       valid: false,
-      sitekey: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+      warning: `Disabling dark theme, huh? Sure thing. Since this is such an unusual request, we just need to make sure you're human.`
     };
   },
 
@@ -52,8 +50,7 @@ export default {
       handler(val, oldval) {
         if (val === true && oldval === false) {
           this.valid = false;
-          this.$refs.recaptcha.reset();
-          console.log(document.getElementById("memes"));
+          this.$refs.captcha.reset();
         }
       }
     }
@@ -64,18 +61,14 @@ export default {
       this.valid = true;
     },
 
-    onExpired() {
-      console.log("Expired");
-    },
-
-    Agree() {
+    OK() {
       if (this.valid) {
-        this.$emit("onAgree");
+        this.$emit("onOk");
       }
     },
 
-    Disagree() {
-      this.$emit("onDisagree");
+    CANCEL() {
+      this.$emit("onCancel");
     }
   }
 };

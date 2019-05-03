@@ -9,21 +9,16 @@ export default new Vuex.Store({
   modules,
 
   state: {
-    darktheme: JSON.parse(localStorage.getItem('darktheme')) || true,
+    darktheme: JSON.parse(localStorage.getItem('darktheme') || true),
   },
 
   mutations: {
     setDarkTheme(state, value) {
       state.darktheme = value
-      localStorage.setItem('darktheme', JSON.stringify(value));
+      localStorage.setItem('darktheme', JSON.stringify(state.darktheme));
     }
   },
-
-
   actions: {
-    init({ commit }) {
-      commit('setDarkTheme', JSON.parse(localStorage.getItem('darktheme')) || true);
-    },
     enableDarkTheme({ commit }) {
       commit('setDarkTheme', true);
     },

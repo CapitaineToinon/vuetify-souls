@@ -125,7 +125,7 @@
 
     <v-content>
       <router-view></router-view>
-      <dark-theme-modal @onAgree="onAgree" @onDisagree="onDisagree" :dialog="dialog"></dark-theme-modal>
+      <dark-theme-modal @onOk="onOk" @onCancel="onCancel" :dialog="darkThemeDialog"></dark-theme-modal>
     </v-content>
 
     <v-fab-transition>
@@ -161,7 +161,7 @@ export default {
 
   data() {
     return {
-      dialog: false,
+      darkThemeDialog: false,
       scrollBackToTop: false,
       appTitle: "speedsouls",
       sidebar: false,
@@ -195,21 +195,24 @@ export default {
     ...mapActions({
       enableDarkTheme: "enableDarkTheme",
       disableDarkTheme: "disableDarkTheme",
-      init: "init",
     }),
 
-    onAgree() {
+    onOk() {
       this.disableDarkTheme();
-      this.dialog = false;
+      this.darkThemeDialog = false;
     },
 
-    onDisagree() { 
-      this.dialog = false;
+    onCancel() {
+      this.darkThemeDialog = false;
     },
 
     toggleDarkTheme() {
+      /**
+       * Triggers a security warning when users
+       * disables the dark theme 🤖
+       */
       if (this.dark) {
-        this.dialog = true;
+        this.darkThemeDialog = true;
       } else {
         this.enableDarkTheme();
       }
@@ -221,10 +224,6 @@ export default {
       const offset = window.innerHeight / 5;
       this.scrollBackToTop = document.documentElement.scrollTop > offset;
     }
-  },
-
-  beforeMount() {
-    // this.init();
   },
 
   mounted() {
