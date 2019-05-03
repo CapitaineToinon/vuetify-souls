@@ -1,9 +1,14 @@
 <template>
   <div v-if="isYouTube" class="speedsouls-video">
-    <youtube :video-id="getYoutubeId()"></youtube>
+    <youtube :video-id="getYoutubeId()" :player-vars="{ autoplay: autoPlay }"></youtube>
   </div>
   <div v-else-if="isTwitch" class="speedsouls-video">
-    <vue-twitch-player :video="getTwitchId()"></vue-twitch-player>
+    <iframe
+      :src="`https://player.twitch.tv/?video=${getTwitchId()}&autoplay=${autoPlay}`"
+      frameborder="0"
+      scrolling="no"
+      allowfullscreen="true"
+    ></iframe>
   </div>
   <div v-else class="speedsouls-video-link pa-3 text-xs-center">
     <a :href="url" target="_blank">{{ url }}</a>
@@ -14,14 +19,13 @@
 // https://github.com/streamlink/streamlink/blob/master/src/streamlink/plugins/twitch.py
 /* eslint-disable-next-line */
 const TWITCH_REGEX = /http(?:s)?:\/\/(?:(?::?[\w\-]+)\.)?twitch.tv\/(?:videos\/(:?\d+)|(?::?[^/]+))(?:\/(?::?[bcv])(?:ideo)?\/(?::?\d+))?(?:\/(?::?[\w]+))?/;
-import VueTwitchPlayer from "vue-twitch-player";
 
 export default {
-  components: {
-    VueTwitchPlayer
-  },
-
   props: {
+    autoPlay: {
+      type: Boolean,
+      default: false,
+    },
     url: {
       type: String,
       required: true
