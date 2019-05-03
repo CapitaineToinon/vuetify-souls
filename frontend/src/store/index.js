@@ -7,8 +7,25 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules,
-  state: {},
-  mutations: {},
-  actions: {},
-  getters: {}
+
+  state: {
+    darktheme: JSON.parse(localStorage.getItem('darktheme')) || false,
+  },
+
+  mutations: {
+    setDarkTheme(state, value) {
+      state.darktheme = value
+      localStorage.setItem('darktheme', JSON.stringify(value));
+    }
+  },
+
+  actions: {
+    setDarkTheme({ commit }, value) {
+      commit('setDarkTheme', value);
+    }
+  },
+
+  getters: {
+    darktheme: state => state.darktheme,
+  }
 });

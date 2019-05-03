@@ -16,7 +16,7 @@
             <v-container fill-height fluid>
               <v-layout align-center text-xs-center fill-height>
                 <v-flex xs12 align-end flexbox class="ml-4 mr-4">
-                  <span class="font-weight-bold headline">{{ game.names.international }}</span>
+                  <span class="font-weight-bold headline white--text">{{ game.names.international }}</span>
                 </v-flex>
               </v-layout>
             </v-container>

@@ -1,9 +1,10 @@
 <template>
-  <v-app dark>
-
+  <v-app :dark="dark">
     <v-navigation-drawer v-model="sidebar" width="300" class="hide-lg-and-down" app temporary>
-      <v-text-field style="margin: 13px 15px -12px 15px;"
-        solo light
+      <v-text-field
+        style="margin: 13px 15px -12px 15px;"
+        solo
+        light
         label="Search Speedsouls"
         prepend-inner-icon="search"
       ></v-text-field>
@@ -41,6 +42,16 @@
       </v-list>
 
       <v-divider></v-divider>
+      <v-list>
+        <v-list-tile @click="toggleDarkTheme">
+          <v-list-tile-action>
+            <v-icon>{{ (dark) ? 'brightness_low' : 'brightness_high' }}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content
+            class="font-weight-bold"
+          >{{ (dark) ? 'Disable' : 'Enable' }} Dark Theme</v-list-tile-content>
+        </v-list-tile>
+      </v-list>
     </v-navigation-drawer>
 
     <v-toolbar app>
@@ -121,7 +132,7 @@
         v-if="scrollBackToTop"
         @click="$vuetify.goTo(0)"
         color="primary"
-        dark
+        :dark="dark"
         fab
         fixed
         bottom
@@ -139,6 +150,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -165,10 +178,24 @@ export default {
     };
   },
 
+  computed: {
+    ...mapGetters({
+      dark: "darktheme"
+    })
+  },
+
   methods: {
+    ...mapActions({
+      setDarkTheme: "setDarkTheme",
+    }),
+
+    toggleDarkTheme() {
+      this.setDarkTheme(!this.dark);
+    },
+
     handleScroll() {
-      const offset = (window.innerHeight / 5);
-      this.scrollBackToTop = (document.documentElement.scrollTop > offset);
+      const offset = window.innerHeight / 5;
+      this.scrollBackToTop = document.documentElement.scrollTop > offset;
     }
   },
 
