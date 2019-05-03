@@ -70,30 +70,18 @@ new Vue({
     axios.interceptors.response.use(
       response => response,
       (error) => {
-        this.$toast.error('Something went wrong');
+        this.$toast.error(error.message);
         console.error(error);
       }
     )
 
-    this.updateGames().then(() => {
-      /* eslint-disable */
-      if (process.env.NODE_ENV !== "production") {
-        console.log("Games properly loaded from main.js", this.games);
-        console.log(process.env.NODE_ENV);
-      }
-      /* eslint-disable */
-    }).catch(() => {
-
-    });
+    this.updateGames();
   },
 
   mounted() {
     this.updateStreams()
-      .then(() => {
-        console.log("Streams", this.streams);
-      })
       .catch(() => {
-
+        console.warn("Oups")
       })
   }
 }).$mount("#app");
