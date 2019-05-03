@@ -5,7 +5,9 @@
   <div v-else-if="isTwitch" class="speedsouls-video">
     <vue-twitch-player :video="getTwitchId()"></vue-twitch-player>
   </div>
-  <div v-else>{{ url }}</div>
+  <div v-else class="speedsouls-video-link pa-3 text-xs-center">
+    <a :href="url" target="_blank">{{ url }}</a>
+  </div>
 </template>
 
 <script>

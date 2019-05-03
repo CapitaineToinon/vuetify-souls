@@ -2,7 +2,12 @@
   <v-layout v-if="isLoaded" wrap>
     <v-flex xs12>
       <v-card class="run-card">
-        <run-video v-for="(link, i) in videos" :key="i" :url="link.uri"></run-video>
+        <div v-if="hasVideos">
+          <run-video v-for="(link, i) in videos" :key="i" :url="link.uri"></run-video>
+        </div>
+        <div v-else>
+          <v-alert :value="true" type="info">No videos.</v-alert>
+        </div>
         <v-card-title>
           <div>
             <span class="headline font-weight-bold">
@@ -63,8 +68,11 @@ export default {
     players() {
       return this.data.players;
     },
+    hasVideos() {
+      return this.videos.length > 0;
+    },
     videos() {
-      return this.data.videos.links;
+      return this.data.videos ? this.data.videos.links : [];
     },
     title() {
       const playerNames = this.players
