@@ -57,7 +57,7 @@ export default {
       return this.data !== null;
     },
     game() {
-      return this.data.game;
+      return this.data.game.data;
     },
     category() {
       return this.data.category;

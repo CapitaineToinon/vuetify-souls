@@ -1,7 +1,9 @@
 <template>
   <v-container>
     <v-layout wrap>
-      <recent-runs :runs="runs" @onRunClick="onRunClick"></recent-runs>
+      <v-flex xs12>
+        <recent-runs :runs="runs" @onRunClick="onRunClick"></recent-runs>
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -13,7 +15,7 @@ import RecentRuns from "@/components/RecentRuns";
 
 export default {
   components: {
-    RecentRuns,
+    RecentRuns
   },
 
   data() {
@@ -34,14 +36,12 @@ export default {
     }),
 
     onRunClick(run) {
-      const game = this.getGameById(run.game);
-
       /**
        * Update breadcrumbs
        */
       this.setBreadcrumbs(
         this.$breadcrumbs("run", {
-          game,
+          game: run.game.data,
           run: "..."
         })
       );
@@ -49,7 +49,7 @@ export default {
       this.$router.push({
         name: "run",
         params: {
-          abbreviation: game.abbreviation,
+          abbreviation: run.game.data.abbreviation,
           id: run.id
         }
       });

@@ -38,8 +38,8 @@ const getSoulsGame = game => getSoulsGames()
  * Limited to runs from the souls serie
  */
 const getRun = id => co(function* () {
-  const run = yield e(`/runs/${id}?embed=players`).then(d => d.data);
-  const game = yield getSoulsGame(run.game);
+  const run = yield e(`/runs/${id}?&embed=game,category,players`).then(d => d.data);
+  const game = getSoulsGame(run.game.data);
 
   /**
    * Reject runs not from the souls serie
@@ -50,13 +50,10 @@ const getRun = id => co(function* () {
     throw error;
   }
 
-  const category = game.categories.data.find(c => c.id === run.category);
   const players = run.players.data.map(player => leaderboard.formatPlayer(player));
 
   return {
     ...run,
-    game,
-    category,
     players,
   }
 });
@@ -76,7 +73,15 @@ const getRecentRunsByGame = g => co(function* () {
     throw error;
   }
 
-  const runs = yield e(`/runs?status=verified&orderby=verify-date&direction=desc&game=${game.id}`).then(d => d.data);
+  const url = `/runs?status=verified&orderby=verify-date&direction=desc&game=${game.id}`
+    + '&embed=game,category,players';
+
+  const runs = yield e(url).then(d => d.data);
+
+  runs.forEach(run => {
+    run.players = run.players.data.map(player => leaderboard.formatPlayer(player));
+  })
+  
   return runs;
 })
 
