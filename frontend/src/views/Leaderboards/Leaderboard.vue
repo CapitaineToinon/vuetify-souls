@@ -145,6 +145,16 @@ export default {
     },
 
     onRunClick(run) {
+      /**
+       * Update breadcrumbs
+       */
+      this.setBreadcrumbs(
+        this.$breadcrumbs("run", {
+          game: this.game,
+          run: "..."
+        })
+      );
+
       this.$router.push({
         name: "run",
         params: {
@@ -222,11 +232,13 @@ export default {
     this.setBreadcrumbs(
       this.$breadcrumbs("leaderboard", {
         game: this.game,
-        run: null,
+        run: null
       })
     );
 
-    window.document.title = `SpeedSouls - ${this.game.names.international} Leaderboards`;
+    window.document.title = `SpeedSouls - ${
+      this.game.names.international
+    } Leaderboards`;
   }
 };
 </script>
