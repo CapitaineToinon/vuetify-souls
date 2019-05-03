@@ -12,6 +12,7 @@
             :src="game.assets.background.uri"
             class="game-image"
             gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
+            :aspect-ratio="16/9"
           >
             <v-container fill-height fluid>
               <v-layout align-center text-xs-center fill-height>
@@ -77,22 +78,6 @@ export default {
 </script>
 
 <style scoped>
-.game-card {
-  cursor: pointer;
-  width: 100%;
-  overflow: hidden;
-  padding-top: 56.25%;
-  position: relative;
-}
-
-.game-card .game-image {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
 .repeating-gradient {
   background-image: repeating-linear-gradient(
     -45deg,

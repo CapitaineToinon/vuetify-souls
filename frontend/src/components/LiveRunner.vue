@@ -13,6 +13,7 @@
               :src="stream.preview.large"
               class="stream-image"
               gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
+              :aspect-ratio="16/9"
             >
               <v-container fill-height fluid>
                 <v-layout align-center text-xs-center fill-height>
@@ -67,20 +68,5 @@ export default {
 <style scoped>
 .stream-card {
   cursor: pointer;
-}
-
-.stream-image-wrapper {
-  width: 100%;
-  overflow: hidden;
-  padding-top: 56.25%;
-  position: relative;
-}
-
-.stream-card .stream-image {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
 }
 </style>
