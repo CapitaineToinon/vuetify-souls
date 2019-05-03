@@ -8,19 +8,21 @@
           :class="`elevation-${hover ? 12 : 2} stream-card`"
           @click="openStream(stream)"
         >
-          <v-img
-            :src="stream.preview.large"
-            height="200px"
-            gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
-          >
-            <v-container fill-height fluid>
-              <v-layout align-center text-xs-center fill-height>
-                <v-flex xs12 align-end flexbox class="ml-4 mr-4">
-                  <span class="font-weight-bold headline">{{ stream.channel.display_name }}</span>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-img>
+          <div class="stream-image-wrapper">
+            <v-img
+              :src="stream.preview.large"
+              class="stream-image"
+              gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
+            >
+              <v-container fill-height fluid>
+                <v-layout align-center text-xs-center fill-height>
+                  <v-flex xs12 align-end flexbox class="ml-4 mr-4">
+                    <span class="font-weight-bold headline">{{ stream.channel.display_name }}</span>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-img>
+          </div>
 
           <v-card-actions>
             <v-list-tile class="text-truncate">
@@ -65,5 +67,20 @@ export default {
 <style scoped>
 .stream-card {
   cursor: pointer;
+}
+
+.stream-image-wrapper {
+  width: 100%;
+  overflow: hidden;
+  padding-top: 56.25%;
+  position: relative;
+}
+
+.stream-card .stream-image {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 </style>
