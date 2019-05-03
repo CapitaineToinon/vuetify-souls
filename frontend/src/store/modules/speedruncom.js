@@ -28,6 +28,9 @@ export default {
     games: state => state.games,
     getGameByAbbreviation: state => abbreviation => {
       return state.games.find(game => game.abbreviation === abbreviation);
+    },
+    getGameById: state => id => {
+      return state.games.find(game => game.id === id);
     }
   }
 };

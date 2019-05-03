@@ -17,6 +17,11 @@ export default new Router({
       name: "home",
     },
     {
+      path: "/recentruns",
+      component: () => import("@/views/RecentRuns.vue"),
+      name: "recentruns",
+    },
+    {
       path: "/leaderboards",
       component: Leaderboard,
       children: [

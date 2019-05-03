@@ -31,8 +31,11 @@ const getLeaderboard = (game, category, subCategories) =>
 
 const getRun = (id) =>  e(`/runs/${id}`).then(d => d.data);
 
+const getRecentRuns = () => e('/recentruns').then(d => d.data);
+
 export default {
   getGames,
   getLeaderboard,
   getRun,
+  getRecentRuns,
 };
