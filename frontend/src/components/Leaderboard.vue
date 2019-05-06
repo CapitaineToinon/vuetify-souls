@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import filters from "@/api/filters.js";
 import { mapGetters } from "vuex";
 import PlayerName from "@/components/PlayerName";
 
@@ -52,12 +51,10 @@ export default {
     headers: {
       type: Array,
       required: true,
-      default: () => []
     },
     runs: {
       type: Array,
       required: true,
-      default: () => []
     }
   },
 
@@ -68,8 +65,6 @@ export default {
   },
 
   methods: {
-    o: value => filters.ordinal(value),
-
     onRunClick(run) {
       this.$emit("onRunClick", run);
     }
