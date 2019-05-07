@@ -27,7 +27,6 @@
 
 <script>
 import { setInterval, clearInterval } from "timers";
-const MEDIA_WIKI_URI = "https://www.speedsouls.com";
 const COUNTDOWN_DURATION = 10;
 
 export default {
@@ -44,7 +43,7 @@ export default {
       return this.countdown < 0;
     },
     to() {
-      return `${MEDIA_WIKI_URI}${this.$route.fullPath}`;
+      return `${process.env.VUE_APP_WIKI_URL}${this.$route.fullPath}`;
     }
   },
 
