@@ -27,8 +27,8 @@
             </v-flex>
             <v-flex xs12>
               <span class="privacy-terms grey--text">
-                <a @click="memes">Privacy</a> -
-                <a @click="memes">Terms</a>
+                <a @click.stop="memes">Privacy</a> -
+                <a @click.stop="memes">Terms</a>
               </span>
             </v-flex>
           </v-layout>

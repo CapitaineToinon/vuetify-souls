@@ -1,6 +1,6 @@
 <template>
   <v-layout row justify-center>
-    <v-dialog v-model="dialog" persistent max-width="400px">
+    <v-dialog v-model="dialog" max-width="400px">
       <v-card>
         <v-card-title class="headline">Security warning</v-card-title>
         <v-card-text>
@@ -33,15 +33,9 @@ export default {
   data() {
     return {
       valid: false,
+      dialog: false,
       warning: `Disabling dark theme, huh? Sure thing. Since this is such an unusual request, we just need to make sure you're human.`
     };
-  },
-
-  props: {
-    dialog: {
-      type: Boolean,
-      required: true
-    }
   },
 
   watch: {
@@ -53,14 +47,17 @@ export default {
           this.$refs.captcha.reset();
         }
       }
+    },
+
+    $route: {
+      immediate: true,
+      handler(val, oldval) {
+        this.dialog = false;
+      }
     }
   },
 
   methods: {
-    onVerify(response) {
-      this.valid = true;
-    },
-
     OK() {
       if (this.valid) {
         this.$emit("onOk");
