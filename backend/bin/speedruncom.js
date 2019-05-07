@@ -39,8 +39,8 @@ const getSoulsGame = game => getSoulsGames()
  */
 const getRun = id => co(function* () {
   const run = yield e(`/runs/${id}?&embed=game,category,players`).then(d => d.data);
-  const game = getSoulsGame(run.game.data);
-
+  const game = yield getSoulsGame(run.game.data.id);
+  
   /**
    * Reject runs not from the souls serie
    */
