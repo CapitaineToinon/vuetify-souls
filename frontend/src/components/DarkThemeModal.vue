@@ -1,6 +1,6 @@
 <template>
   <v-layout row justify-center>
-    <v-dialog v-model="dialog" max-width="400px">
+    <v-dialog v-model="dialog" @keydown.esc="dialog = false" max-width="400px">
       <v-card>
         <v-card-title class="headline">Security warning</v-card-title>
         <v-card-text>
