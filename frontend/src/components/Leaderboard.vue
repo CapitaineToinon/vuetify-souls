@@ -4,12 +4,18 @@
       <tr :active="props.selected" @click="onRunClick(props.item.run)" class="run-row">
         <td class="text-xs-center">
           <v-layout justify-center align-center>
-            <v-flex v-if="props.item.trophy">
-              <v-img :src="props.item.trophy" height="16" width="16"/>
-            </v-flex>
-            <v-flex>
-              <span>{{ props.item.place }}</span>
-            </v-flex>
+            <span
+              v-if="props.item.trophy"
+              v-bind:style="[{
+                backgroundImage: `url(${props.item.trophy})`,
+                backgroundPosition: `left center`,
+                backgroundRepeat: `no-repeat`,
+                backgroundSize: `16px 16px`,
+                paddingLeft: `20px`,
+              }]"
+              class="trophy-icon"
+            >{{ props.item.place }}</span>
+            <span v-else>{{ props.item.place }}</span>
           </v-layout>
         </td>
         <td class="text-xs-center">
@@ -56,12 +62,6 @@ export default {
       type: Array,
       required: true,
     }
-  },
-
-  data() {
-    return {
-      selected: []
-    };
   },
 
   methods: {
