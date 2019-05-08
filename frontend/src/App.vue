@@ -124,7 +124,9 @@
     </v-toolbar>
 
     <v-content>
-      <router-view></router-view>
+      <keep-alive include="LeaderboardsIndex,LiveRunners">
+        <router-view></router-view>
+      </keep-alive>
       <dark-theme-modal @onOk="onOk" @onCancel="onCancel" ref="dark"></dark-theme-modal>
     </v-content>
 
