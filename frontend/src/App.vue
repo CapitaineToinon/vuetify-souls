@@ -213,7 +213,12 @@ export default {
        * disables the dark theme 🤖
        */
       if (this.dark) {
+        // only enable modal in production
+        if (process.env.NODE_ENV === "production") {
         this.$refs.dark.dialog = true;
+      } else {
+          this.disableDarkTheme();
+        }
       } else {
         this.enableDarkTheme();
       }
