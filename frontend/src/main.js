@@ -61,7 +61,7 @@ new Vue({
   }),
   methods: mapActions({
     updateGames: "speedruncom/updateGames",
-    updateStreams: "twitch/updateStreams",
+    initUpdateLoop: "twitch/initUpdateLoop",
   }),
   created() {
     /**
@@ -79,9 +79,6 @@ new Vue({
   },
 
   mounted() {
-    this.updateStreams()
-      .catch(() => {
-        console.warn("Oups")
-      })
+    this.initUpdateLoop();
   }
 }).$mount("#app");

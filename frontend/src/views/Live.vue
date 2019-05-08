@@ -3,6 +3,11 @@
     <div v-if="!error">
       <div v-if="!isLoading">
         <v-layout wrap>
+          <v-flex xs12 class="px-1">
+            <template>
+              <v-progress-linear class="my-2" :value="countdownProgress" height="2"></v-progress-linear>
+            </template>
+          </v-flex>
           <v-layout v-if="suffledStreams.length < 1">
             <v-flex xs12>
               <v-alert :value="true" type="info">Seems like no-one is streaming.</v-alert>
@@ -30,10 +35,12 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import LiveRunner from "../components/LiveRunner";
 
 export default {
+  name: "LiveRunners",
+
   components: {
     LiveRunner
   },
@@ -42,6 +49,7 @@ export default {
     ...mapGetters({
       isLoading: "twitch/isLoading",
       streams: "twitch/streams",
+      countdownProgress: "twitch/countdownProgress",
       error: "twitch/error"
     }),
 

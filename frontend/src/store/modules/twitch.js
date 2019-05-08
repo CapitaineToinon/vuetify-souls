@@ -1,12 +1,15 @@
 import api from "../../api/twitch";
 import co from "co";
 
+const COUNTDOWN_DURATION = 60 * 5;
+
 export default {
   namespaced: true,
 
   state: {
     error: false,
-    isLoading: true,
+    isLoading: false,
+    countdown: 0,
     streams: []
   },
 
@@ -21,6 +24,10 @@ export default {
 
     _setError(state, value) {
       state.error = value;
+    },
+
+    _setCountdown(state, value) {
+      state.countdown = value;
     }
   },
 
@@ -37,11 +44,33 @@ export default {
         commit("_setIsLoading", false);
       })
     },
+
+    decreaseCountdown({ dispatch, commit, getters }) {
+      commit("_setCountdown", getters.countdown - 1)
+
+      if (getters.countdown < 0) {
+        dispatch("updateStreams");
+        dispatch("resetCountdown");
+      }
+    },
+
+    resetCountdown({ commit }) {
+      commit("_setCountdown", COUNTDOWN_DURATION);
+    },
+
+    initUpdateLoop({ dispatch }) {
+      (function updateloop() {
+        dispatch("decreaseCountdown");
+        setTimeout(updateloop, 1000);
+      })();
+    },
   },
 
   getters: {
     streams: state => state.streams,
     isLoading: state => state.isLoading,
+    countdown: state => state.countdown,
+    countdownProgress: state => (state.countdown * 100) / COUNTDOWN_DURATION,
     error: state => state.error,
   }
 };
