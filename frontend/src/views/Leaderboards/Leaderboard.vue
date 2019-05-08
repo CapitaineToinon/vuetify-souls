@@ -1,15 +1,15 @@
 <template>
   <v-layout wrap v-if="mounted">
-    <v-flex xs12 sm3>
+    <v-flex xs12 md3>
       <CategoriesListing
         :categories="game.categories.data"
         :selected="selectedCategory"
-        @onCategoryClick="onCategoryClick"
+        @onCategoryChange="changeCategory"
         class="mb-2 mx-1"
       ></CategoriesListing>
     </v-flex>
 
-    <v-flex xs12 sm9>
+    <v-flex xs12 md9>
       <v-layout row wrap>
         <v-flex v-if="subCategories !== null" xs12>
           <v-btn-toggle
@@ -125,7 +125,6 @@ export default {
       let selected = null;
 
       if (this.mounted && this.category) {
-        console.log(this.game.categories.data);
         selected = this.game.categories.data.findIndex(category => category.id === this.category.id);
       }
 
@@ -147,7 +146,7 @@ export default {
       setBreadcrumbs: "breadcrumbs/setBreadcrumbs"
     }),
 
-    onCategoryClick(category) {
+    changeCategory(category) {
       /**
        * This will trigger the category watcher, eventually
        * updating the leaderboards
