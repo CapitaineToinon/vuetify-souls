@@ -3,6 +3,7 @@
     <v-flex xs12 sm3>
       <CategoriesListing
         :categories="game.categories.data"
+        :selected="selectedCategory"
         @onCategoryClick="onCategoryClick"
         class="mb-2 mx-1"
       ></CategoriesListing>
@@ -120,6 +121,17 @@ export default {
   },
 
   computed: {
+    selectedCategory() {
+      let selected = null;
+
+      if (this.mounted && this.category) {
+        console.log(this.game.categories.data);
+        selected = this.game.categories.data.findIndex(category => category.id === this.category.id);
+      }
+
+      return selected;
+    },
+
     mounted() {
       return this.game !== null;
     },

@@ -1,24 +1,39 @@
 <template>
   <v-card>
-    <v-toolbar color="primary">
-      <v-toolbar-title>Categories</v-toolbar-title>
-    </v-toolbar>
+    <v-navigation-drawer width="auto">
+      <v-toolbar flat>
+        <v-list>
+          <v-list-tile>
+            <v-list-tile-title>Categories</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-toolbar>
 
-    <v-list one-line>
-      <template v-for="(item, index) in perGameCategories">
-        <v-list-tile :key="index" avatar @click="onCategoryClick(item)">
-          <v-list-tile-content :key="item.id">
+      <v-divider></v-divider>
+
+      <v-list>
+        <v-list-tile
+          v-for="(item, index) in perGameCategories"
+          :key="index"
+          :class="(index === selected) ? `primary` : ``"
+          @click="onCategoryClick(item)"
+        >
+          <v-list-tile-content>
             <v-list-tile-title>{{ item.name }}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-      </template>
-    </v-list>
+      </v-list>
+    </v-navigation-drawer>
   </v-card>
 </template>
 
 <script>
 export default {
   props: {
+    selected: {
+      type: Number,
+      default: () => null,
+    },
     categories: {
       type: Array,
       required: true
@@ -35,7 +50,7 @@ export default {
     onCategoryClick(category) {
       this.$emit("onCategoryClick", category);
     }
-  },
+  }
 };
 </script>
 
