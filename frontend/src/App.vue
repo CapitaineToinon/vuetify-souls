@@ -54,7 +54,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-toolbar app>
+    <v-toolbar app flat>
       <span>
         <v-toolbar-side-icon @click="sidebar = !sidebar" style="margin-right: -5px"></v-toolbar-side-icon>
       </span>
@@ -124,7 +124,7 @@
     </v-toolbar>
 
     <v-content>
-      <keep-alive include="LeaderboardsIndex,LiveRunners">
+      <keep-alive :include="cachedRoutes">
         <router-view></router-view>
       </keep-alive>
       <dark-theme-modal @onOk="onOk" @onCancel="onCancel" ref="dark"></dark-theme-modal>
@@ -166,6 +166,7 @@ export default {
       scrollBackToTop: false,
       appTitle: "speedsouls",
       sidebar: false,
+      cachedRoutes: ["LeaderboardsIndex", "LiveRunners", "about"],
       menuItems: [
         { title: "Home", path: "/", icon: "home" },
         {
@@ -215,8 +216,8 @@ export default {
       if (this.dark) {
         // only enable modal in production
         if (process.env.NODE_ENV === "production") {
-        this.$refs.dark.dialog = true;
-      } else {
+          this.$refs.dark.dialog = true;
+        } else {
           this.disableDarkTheme();
         }
       } else {
