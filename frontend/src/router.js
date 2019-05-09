@@ -15,6 +15,9 @@ export default new Router({
       path: "/",
       component: Base,
       name: "home",
+      meta: {
+        flatToolbar: false,
+      }
     },
     {
       path: "/recentruns",
@@ -46,6 +49,9 @@ export default new Router({
       path: "/about",
       name: "about",
       component: About,
+      meta: {
+        flatToolbar: true,
+      }
     },
     {
       path: "/live",

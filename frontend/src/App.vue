@@ -54,7 +54,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-toolbar app flat>
+    <v-toolbar app :flat="this.$route.meta.flatToolbar">
       <span>
         <v-toolbar-side-icon @click="sidebar = !sidebar" style="margin-right: -5px"></v-toolbar-side-icon>
       </span>
@@ -190,7 +190,7 @@ export default {
   computed: {
     ...mapGetters({
       dark: "darktheme"
-    })
+    }),
   },
 
   methods: {
@@ -236,6 +236,7 @@ export default {
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
     window.dispatchEvent(new Event("scroll"));
+    console.log(this.$route);
   },
 
   destroyed() {

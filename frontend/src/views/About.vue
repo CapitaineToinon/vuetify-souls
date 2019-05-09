@@ -4,7 +4,7 @@
       <v-flex xs12>
         <v-card v-bind:style="[cardStyle]" class="py-5">
           <v-flex xs12 class="mb-3 px-5">
-            <v-img :src="mainLogo" max-height="90px" contain></v-img>
+            <v-img :src="mainLogo" height="90px" contain></v-img>
           </v-flex>
           <v-flex xs12>
             <v-container>
