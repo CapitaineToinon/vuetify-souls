@@ -8,20 +8,20 @@
     <v-container fill-height class="pa-5">
       <v-layout align-space-between justify-center column fill-height>
         <div>
-          <v-layout row wrap>
-            <v-flex xs12 class="mb-2 text-xs-center">
+          <v-layout row wrap class="text-xs-center white--text">
+            <v-flex xs12 class="mb-2">
+              <span class="display-1 font-weight-bold">{{ game.names.international }}</span>
+            </v-flex>
+            <v-flex xs12 class="mb-2">
               <span
                 class="display-2 font-weight-bold"
-              >{{ game.names.international }} {{ category.name }} {{ run.times.primary_t | formatTime }}</span>
+              >{{ category.name }} {{ run.times.primary_t | formatTime }}</span>
             </v-flex>
-            <v-flex xs12 class="px-2 text-xs-center">
+            <v-flex xs12 class="px-2">
               <span class="headline font-weight-bold">
                 by
-                <player-name
-                  v-for="(player, index) in players"
-                  :key="index"
-                  :player="player"
-                ></player-name>
+                <player-name v-for="(player, index) in players" :key="index" :player="player"></player-name>
+                {{ run.date | formatDate }}
               </span>
             </v-flex>
           </v-layout>

@@ -194,7 +194,7 @@ export default {
   computed: {
     ...mapGetters({
       dark: "darktheme"
-    }),
+    })
   },
 
   methods: {
@@ -240,7 +240,6 @@ export default {
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
     window.dispatchEvent(new Event("scroll"));
-    console.log(this.$route);
   },
 
   destroyed() {

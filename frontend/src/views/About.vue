@@ -117,10 +117,6 @@ export default {
           };
     },
 
-    openSocial() {
-      window.open("www.google.com");
-    },
-
     mounted() {
       return this.content !== null;
     },
