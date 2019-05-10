@@ -44,16 +44,14 @@ export default {
     }
   },
 
-  activated() {
+  mounted() {
     /**
      * Update breadcrumbs
      */
     this.setBreadcrumbs(this.$breadcrumbs("gamelist"));
 
     window.document.title = `SpeedSouls - Souls Games`;
-  },
-
-  mounted() {}
+  }
 };
 </script>
 
