@@ -1,0 +1,78 @@
+<template>
+  <v-carousel-item
+    :src="game.assets.background.uri"
+    gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
+    @click="onClick"
+    class="carousel-run"
+  >
+    <v-container fill-height class="pa-5">
+      <v-layout align-space-between justify-center column fill-height>
+        <div>
+          <v-layout row wrap>
+            <v-flex xs12 class="mb-2 text-xs-center">
+              <span
+                class="display-2 font-weight-bold"
+              >{{ game.names.international }} {{ category.name }} {{ run.times.primary_t | formatTime }}</span>
+            </v-flex>
+            <v-flex xs12 class="px-2 text-xs-center">
+              <span class="headline font-weight-bold">
+                by
+                <player-name
+                  v-for="(player, index) in players"
+                  :key="index"
+                  :player="player"
+                ></player-name>
+              </span>
+            </v-flex>
+          </v-layout>
+        </div>
+      </v-layout>
+    </v-container>
+  </v-carousel-item>
+</template>
+
+<script>
+import PlayerName from "@/components/PlayerName";
+
+export default {
+  components: {
+    PlayerName
+  },
+
+  props: {
+    run: {
+      type: Object,
+      required: true
+    }
+  },
+
+  computed: {
+    game() {
+      return this.run.game.data;
+    },
+    category() {
+      return this.run.category.data;
+    },
+    players() {
+      return this.run.players;
+    },
+    title() {
+      const playerNames = this.players.map(player => player.name).join(", ");
+      return `${this.category.name} ${this.runTime} by ${playerNames}`;
+    }
+  },
+
+  methods: {
+    onClick() {
+      this.$emit("onRunClick", this.run);
+    }
+  }
+};
+</script>
+
+<style scoped>
+.carousel-run {
+  cursor: pointer;
+}
+</style>
+
