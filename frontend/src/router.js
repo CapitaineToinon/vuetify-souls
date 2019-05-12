@@ -1,9 +1,5 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Base from "@/views/Base.vue";
-import About from "@/views/About.vue";
-import Live from "@/views/Live.vue";
-import Leaderboard from "@/views/Leaderboards/Index.vue";
 
 Vue.use(Router);
 
@@ -13,11 +9,8 @@ export default new Router({
   routes: [
     {
       path: "/",
-      component: Base,
-      name: "home",
-      meta: {
-        flatToolbar: false,
-      }
+      component: () => import("@/views/Base.vue"),
+      name: "home"
     },
     {
       path: "/recentruns",
@@ -26,7 +19,7 @@ export default new Router({
     },
     {
       path: "/leaderboards",
-      component: Leaderboard,
+      component: () => import("@/views/Leaderboards/Index.vue"),
       children: [
         {
           path: "",
@@ -48,7 +41,7 @@ export default new Router({
     {
       path: "/about",
       name: "about",
-      component: About,
+      component: () => import("@/views/About.vue"),
       meta: {
         flatToolbar: true,
       }
@@ -56,7 +49,7 @@ export default new Router({
     {
       path: "/live",
       name: "live",
-      component: Live,
+      component: () => import("@/views/Live.vue"),
     },
     {
       path: "**",
