@@ -39,7 +39,7 @@ import { mapGetters, mapActions } from "vuex";
 import LiveRunner from "../components/LiveRunner";
 
 export default {
-  name: "LiveRunners",
+  name: "live",
 
   components: {
     LiveRunner

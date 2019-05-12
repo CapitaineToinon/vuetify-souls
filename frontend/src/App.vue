@@ -170,7 +170,7 @@ export default {
        * Todo caching routes
        * Causing problems right now with nested router-view
        */
-      cachedRoutes: [],
+      cachedRoutes: ["about", "live"],
       menuItems: [
         { title: "Home", path: "/", icon: "home" },
         {
