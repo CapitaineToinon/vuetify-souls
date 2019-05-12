@@ -115,21 +115,21 @@ router.get('/leaderboard/:game/:category', (req, res, next) => {
  * https://www.twitch.tv/team/speedsouls
  */
 router.get('/liverunners', (req, res, next) => {
-  cache(req.originalUrl, twitch.getLiveStreams)
-    .then(streams => {
-      co(function* () {
-        const games = yield src.getSoulsGames();
+  cache(req.originalUrl, () => {
+    return co(function* () {
+      const streams = yield twitch.getLiveStreams();
+      const games = yield src.getSoulsGames();
 
-        /**
-         * Exclude streams not playing a souls game
-         */
-        const gamesTwitchNames = games.map(g => g.names.twitch);
-        const soulsStreams = streams.filter(s => gamesTwitchNames.includes(s.game));
-        res.json(soulsStreams);
-      }).catch(err => {
-        next(err);
-      })
-    }).catch(err => next(err));
+      /**
+       * Exclude streams not playing a souls game
+       */
+      const gamesTwitchNames = games.map(g => g.names.twitch);
+      const soulsStreams = streams.filter(s => gamesTwitchNames.includes(s.game));
+      return soulsStreams
+    })
+  })
+    .then(streams => res.json(streams))
+    .catch(err => next(err));
 });
 
 /**
