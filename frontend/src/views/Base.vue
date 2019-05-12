@@ -2,39 +2,37 @@
   <v-container fluid class="pa-0">
     <v-layout wrap>
       <v-flex xs12>
-        <keep-alive>
-          <v-carousel v-model="selectedCarousel" :height="carouselHeight">
-            <v-carousel-item
-              :src="randomBackground"
-              gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
-            >
-              <v-container fill-height class="pa-5">
-                <v-layout align-space-between justify-center column fill-height>
-                  <div>
-                    <v-layout align-center justify-center row wrap>
-                      <v-flex xs12 class="mb-2">
-                        <v-img :src="mainLogo" height="90px" contain></v-img>
-                      </v-flex>
-                      <v-flex xs12 sm4 class="px-2">
-                        <v-btn color="red" large block :to="{ name: 'gamelist' }">Leaderboards</v-btn>
-                      </v-flex>
-                      <v-flex xs12 sm4 class="px-2">
-                        <v-btn color="primary" large block @click="openWiki">Wiki</v-btn>
-                      </v-flex>
-                    </v-layout>
-                  </div>
-                </v-layout>
-              </v-container>
-            </v-carousel-item>
+        <v-carousel v-model="selectedCarousel" :height="carouselHeight">
+          <v-carousel-item
+            :src="randomBackground"
+            gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
+          >
+            <v-container fill-height class="pa-5">
+              <v-layout align-space-between justify-center column fill-height>
+                <div>
+                  <v-layout align-center justify-center row wrap>
+                    <v-flex xs12 class="mb-2">
+                      <v-img :src="mainLogo" height="90px" contain></v-img>
+                    </v-flex>
+                    <v-flex xs12 sm4 class="px-2">
+                      <v-btn color="red" large block :to="{ name: 'gamelist' }">Leaderboards</v-btn>
+                    </v-flex>
+                    <v-flex xs12 sm4 class="px-2">
+                      <v-btn color="primary" large block @click="openWiki">Wiki</v-btn>
+                    </v-flex>
+                  </v-layout>
+                </div>
+              </v-layout>
+            </v-container>
+          </v-carousel-item>
 
-            <carousel-run
-              v-for="(run, i) in carouselRuns"
-              :key="i"
-              :run="run"
-              @onRunClick="onRunClick"
-            />
-          </v-carousel>
-        </keep-alive>
+          <carousel-run
+            v-for="(run, i) in carouselRuns"
+            :key="i"
+            :run="run"
+            @onRunClick="onRunClick"
+          />
+        </v-carousel>
       </v-flex>
       <v-flex xs12>
         <v-container>
@@ -63,7 +61,7 @@ export default {
 
   components: {
     CarouselRun,
-    RecentRuns,
+    RecentRuns
   },
 
   data() {
@@ -71,6 +69,7 @@ export default {
       mainLogo: require("@/assets/main-logo-white.png"),
       carouselHeight: 400,
       selectedCarousel: 0,
+      carouselRuns: [],
       runs: []
     };
   },
@@ -83,16 +82,10 @@ export default {
     }),
 
     randomBackground() {
-      if (this.mounted) {
-        const index = Math.floor(Math.random() * Math.floor(this.games.length));
-        return this.games[index].assets.background.uri;
-      }
-    },
-
-    carouselRuns() {
-      return this.runs.length < CAROUSEL_RUNS
-        ? this.runs
-        : this.runs.slice(0, CAROUSEL_RUNS);
+      const index = Math.floor(Math.random() * Math.floor(this.games.length));
+      return `${process.env.VUE_APP_API_BASE_URL}/background/${
+        this.games[index].id
+      }`;
     }
   },
 
@@ -127,11 +120,14 @@ export default {
     }
   },
 
-  beforeCreate() {
+  created() {
     api.getRecentRuns().then(runs => {
       this.runs = runs.slice(0, 20);
-      console.log(this.carouselRuns);
+      this.carouselRuns =
+        this.runs.length < CAROUSEL_RUNS
+          ? this.runs
+          : this.runs.slice(0, CAROUSEL_RUNS);
     });
-  },
+  }
 };
 </script>

@@ -1,13 +1,7 @@
 import Vue from "vue";
 import Vuetify from "vuetify";
 import App from "./App.vue";
-
-import Loader from "@/components/Loader";
-Vue.component("loader", Loader);
-
-import VueBreadcrumbs from 'vuejs2-breadcrumbs'
-import options from '@/api/breadcrumbs.js'
-Vue.use(VueBreadcrumbs, options);
+import axios from "axios";
 
 Vue.config.productionTip = false;
 
@@ -19,7 +13,13 @@ import theme from "./theme";
 Vue.use(Vuetify, { theme });
 
 import VueYoutube from 'vue-youtube'
+import Loader from "@/components/Loader";
+import VueBreadcrumbs from 'vuejs2-breadcrumbs';
+import options from '@/api/breadcrumbs.js';
+
 Vue.use(VueYoutube);
+Vue.component("loader", Loader);
+Vue.use(VueBreadcrumbs, options);
 
 import filters from "./api/filters";
 Object.keys(filters).map(key => {
@@ -28,9 +28,8 @@ Object.keys(filters).map(key => {
 
 import router from "./router";
 import store from "./store";
-import { mapActions, mapGetters } from "vuex";
 
-import VuetifyToast from 'vuetify-toast-snackbar'
+import VuetifyToast from 'vuetify-toast-snackbar';
 Vue.use(VuetifyToast, {
   x: 'right',
   y: 'bottom',
@@ -47,38 +46,57 @@ Vue.use(VuetifyToast, {
     }
   },
   property: '$toast'
-})
+});
 
-import axios from "axios";
+import { mapActions, mapGetters } from "vuex";
 
-new Vue({
-  render: h => h(App),
-  store,
-  router,
-  computed: mapGetters({
-    games: "speedruncom/games",
-    streams: "twitch/streams",
-  }),
-  methods: mapActions({
-    updateGames: "speedruncom/updateGames",
-    initUpdateLoop: "twitch/initUpdateLoop",
-  }),
-  created() {
-    /**
-     * Success and error events from the API
-     */
-    axios.interceptors.response.use(
-      response => response,
-      (error) => {
-        this.$toast.error(error.message);
-        console.error(error);
+const createVue = () => {
+  new Vue({
+    render: h => h(App),
+    store,
+    router,
+
+    computed: mapGetters({
+      games: "speedruncom/games",
+      mounted: "speedruncom/mounted",
+      streams: "twitch/streams",
+    }),
+
+    methods: mapActions({
+      initUpdateLoop: "twitch/initUpdateLoop",
+    }),
+
+    created() {
+      /**
+       * Success and error events from the API
+       */
+      axios.interceptors.response.use(
+        response => response,
+        (error) => {
+          this.$toast.error(error.message);
+          console.error(error);
+        }
+      );
+
+      if (!this.mounted) {
+        this.$toast.error("Error loading the games");
       }
-    )
+    },
 
-    this.updateGames();
-  },
+    mounted() {
+      this.initUpdateLoop();
+    }
+  }).$mount("#app");
+};
 
-  mounted() {
-    this.initUpdateLoop();
-  }
-}).$mount("#app");
+/**
+ * Update the games into the store before
+ * mounting the App
+ */
+store.dispatch("speedruncom/updateGames").then(() => {
+  // Ok
+}).catch(() => {
+  // Not ok...
+}).then(() => {
+  createVue();
+})
