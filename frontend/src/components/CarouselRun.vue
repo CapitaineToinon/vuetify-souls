@@ -61,7 +61,7 @@ export default {
       return `${this.category.name} ${this.runTime} by ${playerNames}`;
     },
     background() {
-      return `${process.env.VUE_APP_API_BASE_URL}/background/${this.run.game.data.id}`;
+      return `${process.env.VUE_APP_API_BASE_URL}/background/${this.run.game.data.id}-1280.jpg`;
     }
   },
 

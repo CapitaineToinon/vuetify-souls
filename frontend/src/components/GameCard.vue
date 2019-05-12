@@ -35,7 +35,7 @@ export default {
 
   computed: {
     background() {
-      return `${process.env.VUE_APP_API_BASE_URL}/background/${this.game.id}`;
+      return `${process.env.VUE_APP_API_BASE_URL}/background/${this.game.id}-640.jpg`;
     }
   },
 

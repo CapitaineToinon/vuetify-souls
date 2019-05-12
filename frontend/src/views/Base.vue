@@ -82,10 +82,9 @@ export default {
     }),
 
     randomBackground() {
+      const base_url = process.env.VUE_APP_API_BASE_URL;
       const index = Math.floor(Math.random() * Math.floor(this.games.length));
-      return `${process.env.VUE_APP_API_BASE_URL}/background/${
-        this.games[index].id
-      }`;
+      return `${base_url}/background/${this.games[index].id}-1280.jpg`;
     }
   },
 

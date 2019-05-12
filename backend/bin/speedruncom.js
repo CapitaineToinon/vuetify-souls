@@ -1,6 +1,6 @@
 const co = require('co');
 const axios = require('axios');
-var exec = require('child_process').exec;
+const sharp = require("sharp");
 const BASE_URL = 'https://www.speedrun.com/api/v1';
 const SERIE_NAME = 'souls';
 
@@ -41,7 +41,7 @@ const getSoulsGame = game => getSoulsGames()
 const getRun = id => co(function* () {
   const run = yield e(`/runs/${id}?&embed=game,category,players`).then(d => d.data);
   const game = yield getSoulsGame(run.game.data.id);
-  
+
   /**
    * Reject runs not from the souls serie
    */
@@ -82,7 +82,7 @@ const getRecentRunsByGame = g => co(function* () {
   runs.forEach(run => {
     run.players = run.players.data.map(player => leaderboard.formatPlayer(player));
   })
-  
+
   return runs;
 })
 
@@ -185,16 +185,20 @@ const getWorldRecords = (game, misc) => co(function* () {
  * Download background from game
  */
 const downloadBackground = (game, DOWNLOAD_DIR) => {
-  // extract the file name
-  const file_name = `${game.id}.png`;
   const file_url = game.assets.background.uri;
-  // compose the wget command
-  const wget = `wget -O ${DOWNLOAD_DIR}/${file_name} ${file_url}`;
-  // excute wget using child_process' exec function
-  exec(wget, function(err, stdout, stderr) {
-      if (err) throw err;
-      else console.log(`${file_name} downloaded to ${DOWNLOAD_DIR}`);
-  });
+  axios({
+    url: file_url,
+    method: 'get',
+    responseType: 'arraybuffer'
+  }).then(data => {
+    const buffer = data.data;
+    sharp(buffer)
+      .resize(640)
+      .toFile(`${DOWNLOAD_DIR}/${game.id}-640.jpg`);
+    sharp(buffer)
+      .resize(1280)
+      .toFile(`${DOWNLOAD_DIR}/${game.id}-1280.jpg`);
+  })
 };
 
 /**

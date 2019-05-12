@@ -61,7 +61,7 @@ router.get('/background/:name', (req, res, next) => {
   };
 
   const { name } = req.params;
-  res.sendFile(`${name}.png`, options, (err) => {
+  res.sendFile(name, options, (err) => {
     if (err) {
       error = new Error(err.code);
       error.code = err.status;
