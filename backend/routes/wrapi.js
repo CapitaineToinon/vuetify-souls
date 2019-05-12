@@ -2,25 +2,16 @@ const express = require('express');
 
 const router = express.Router();
 const wrapi = require('../bin/wrapi');
-
-const apicache = require('apicache');
-const cache = apicache.middleware;
-const CACHE_DURATION = '5 minutes';
+const cache = require("../bin/cache");
 
 /**
  * Get world record for a game/category
  * Limited to games from the souls serie
  */
-router.get('/:game/:category', cache(CACHE_DURATION), (req, res, next) => {
-  const game = req.params.game;
-  const category = req.params.category;
+router.get('/:game/:category', (req, res, next) => {
+  const { game, category } = req.params;
 
-  if (!category) {
-    next();
-    return;
-  }
-
-  wrapi.getWorldRecord(game, category)
+  cache(req.originalUrl, wrapi.getWorldRecord, [game, category])
     .then(wr => res.send(wr))
     .catch(err => next(err));
 });
@@ -30,10 +21,10 @@ router.get('/:game/:category', cache(CACHE_DURATION), (req, res, next) => {
  * Include misc=true in the query for misc categories
  * Limited to games from the souls serie
  */
-router.get('/:game', cache(CACHE_DURATION), (req, res, next) => {
+router.get('/:game', (req, res, next) => {
   const game = req.params.game;
   const misc = !!(req.query.misc) && req.query.misc === 'true';
-  wrapi.getWorldRecords(game, misc)
+  cache(req.originalUrl, wrapi.getWorldRecords, [game, misc])
     .then(wrs => res.send(wrs))
     .catch(err => next(err));
 });
