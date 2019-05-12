@@ -126,6 +126,8 @@ router.get('/liverunners', (req, res, next) => {
         const gamesTwitchNames = games.map(g => g.names.twitch);
         const soulsStreams = streams.filter(s => gamesTwitchNames.includes(s.game));
         res.json(soulsStreams);
+      }).catch(err => {
+        next(err);
       })
     }).catch(err => next(err));
 });
