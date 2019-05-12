@@ -44,7 +44,7 @@ export default {
     }
   },
 
-  mounted() {
+  activated() {
     /**
      * Update breadcrumbs
      */

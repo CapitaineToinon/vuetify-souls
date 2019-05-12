@@ -125,7 +125,9 @@ export default {
       let selected = null;
 
       if (this.mounted && this.category) {
-        selected = this.game.categories.data.findIndex(category => category.id === this.category.id);
+        selected = this.game.categories.data.findIndex(
+          category => category.id === this.category.id
+        );
       }
 
       return selected;
@@ -219,7 +221,7 @@ export default {
     }
   },
 
-  mounted() {
+  activated() {
     const abbreviation = this.$route.params.abbreviation;
     const game = this.getGameByAbbreviation(abbreviation);
 

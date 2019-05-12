@@ -4,7 +4,7 @@
 const NodeCache = require("node-cache");
 const myCache = new NodeCache({
   stdTTL: 5 * 60,
-  checkperiod: 5 * 60,
+  checkperiod: 10 * 60,
   deleteOnExpire: false,
 });
 

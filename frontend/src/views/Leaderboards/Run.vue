@@ -41,6 +41,8 @@ import { mapActions } from "vuex";
 import PlayerName from "@/components/PlayerName";
 
 export default {
+  name: "runpage",
+
   components: {
     RunVideo,
     PlayerName
@@ -86,13 +88,12 @@ export default {
     })
   },
 
-  mounted() {
+  activated() {
+    this.data = null;
     api
       .getRun(this.$route.params.id)
       .then(data => {
         this.data = data;
-
-        console.log(this.data);
 
         /**
          * Update breadcrumbs
