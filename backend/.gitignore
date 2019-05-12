@@ -1,2 +1,8 @@
-public
+# exclude everything
+public/*
+backgrounds/*
+
+# exception to the rule
+!public/.gitkeep 
+!backgrounds/.gitkeep 
 .env
