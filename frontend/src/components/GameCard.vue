@@ -7,7 +7,7 @@
     >
       <v-img
         v-if="game.assets.background !== null"
-        :src="game.assets.background.uri"
+        :src="background"
         class="game-image"
         gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
         :aspect-ratio="16/9"
@@ -30,6 +30,12 @@ export default {
     game: {
       type: Object,
       required: true,
+    }
+  },
+
+  computed: {
+    background() {
+      return `${process.env.VUE_APP_API_BASE_URL}/background/${this.game.id}`;
     }
   },
 

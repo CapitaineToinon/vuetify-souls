@@ -9,15 +9,7 @@ const e = path => axios.get(`${process.env.VUE_APP_API_BASE_URL}${path}`);
 /**
  * Get souls games
  */
-const getGames = () => e("/games").then(games => {
-  games.data.forEach(game => {
-    if (game.assets.background !== null) {
-      game.assets.background.uri = `${process.env.VUE_APP_API_BASE_URL}/background/${game.id}`;
-    }
-  })
-
-  return games.data;
-})
+const getGames = () => e("/games").then(games => games.data);
 
 /**
  * Get leaderboard for a game/category

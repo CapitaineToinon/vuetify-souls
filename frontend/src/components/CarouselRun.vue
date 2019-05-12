@@ -1,6 +1,6 @@
 <template>
   <v-carousel-item
-    :src="game.assets.background.uri"
+    :src="background"
     gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
     @click="onClick"
     class="carousel-run"
@@ -59,6 +59,9 @@ export default {
     title() {
       const playerNames = this.players.map(player => player.name).join(", ");
       return `${this.category.name} ${this.runTime} by ${playerNames}`;
+    },
+    background() {
+      return `${process.env.VUE_APP_API_BASE_URL}/background/${this.run.game.data.id}`;
     }
   },
 
