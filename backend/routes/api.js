@@ -35,9 +35,39 @@ router.get('/', (req, res) => {
  * https://www.speedrun.com/souls
  */
 router.get('/games', (req, res, next) => {
-  cache(req.originalUrl, src.getSoulsGames)
+  cache(req.originalUrl, (() => {
+    return src.getSoulsGames().then(games => {
+      games.forEach(game => {
+        src.downloadBackground(game, "backgrounds");
+      });
+      return games;
+    });
+  }))
     .then(games => res.json(games))
     .catch(err => next(err));
+});
+
+/**
+ * Get a game's background image
+ */
+router.get('/background/:name', (req, res, next) => {
+  var options = {
+    root: __dirname + '/../backgrounds/',
+    dotfiles: 'deny',
+    headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true
+    }
+  };
+
+  const { name } = req.params;
+  res.sendFile(`${name}.png`, options, (err) => {
+    if (err) {
+      error = new Error(err.code);
+      error.code = err.status;
+      next(error);
+    }
+  });
 });
 
 /**

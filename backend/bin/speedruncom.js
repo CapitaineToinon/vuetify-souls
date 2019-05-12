@@ -1,5 +1,6 @@
 const co = require('co');
 const axios = require('axios');
+var exec = require('child_process').exec;
 const BASE_URL = 'https://www.speedrun.com/api/v1';
 const SERIE_NAME = 'souls';
 
@@ -181,6 +182,22 @@ const getWorldRecords = (game, misc) => co(function* () {
 });
 
 /**
+ * Download background from game
+ */
+const downloadBackground = (game, DOWNLOAD_DIR) => {
+  // extract the file name
+  const file_name = `${game.id}.png`;
+  const file_url = game.assets.background.uri;
+  // compose the wget command
+  const wget = `wget -O ${DOWNLOAD_DIR}/${file_name} ${file_url}`;
+  // excute wget using child_process' exec function
+  exec(wget, function(err, stdout, stderr) {
+      if (err) throw err;
+      else console.log(`${file_name} downloaded to ${DOWNLOAD_DIR}`);
+  });
+};
+
+/**
  * =========================================>>
  * EXPORTS
  * =========================================>>
@@ -193,4 +210,5 @@ module.exports = {
   getRecentRunsByGame,
   getWorldRecord,
   getWorldRecords,
+  downloadBackground,
 };
