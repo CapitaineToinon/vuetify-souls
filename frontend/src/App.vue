@@ -166,11 +166,7 @@ export default {
       scrollBackToTop: false,
       appTitle: "speedsouls",
       sidebar: false,
-      /**
-       * Todo caching routes
-       * Causing problems right now with nested router-view
-       */
-      cachedRoutes: ["LeaderboardsIndex", "about", "live"],
+      cachedRoutes: ["home", "LeaderboardsIndex", "about", "live"],
       menuItems: [
         { title: "Home", path: "/", icon: "home" },
         {

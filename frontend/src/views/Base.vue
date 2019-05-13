@@ -2,7 +2,7 @@
   <v-container fluid class="pa-0">
     <v-layout wrap>
       <v-flex xs12>
-        <v-carousel v-model="selectedCarousel" :height="carouselHeight">
+        <v-carousel v-model="selectedCarousel" :height="carouselHeight" :cycle="cycle">
           <v-carousel-item
             :src="randomBackground"
             gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
@@ -70,7 +70,9 @@ export default {
       carouselHeight: 400,
       selectedCarousel: 0,
       carouselRuns: [],
-      runs: []
+      runs: [],
+      // https://github.com/vuetifyjs/vuetify/issues/7196#issuecomment-491753391
+      cycle: false,
     };
   },
 
@@ -117,6 +119,16 @@ export default {
         }
       });
     }
+  },
+
+  activated() {
+    // https://github.com/vuetifyjs/vuetify/issues/7196#issuecomment-491753391
+    this.cycle = true;
+  },
+
+  deactivated() {
+    // https://github.com/vuetifyjs/vuetify/issues/7196#issuecomment-491753391
+    this.cycle = false;
   },
 
   created() {
