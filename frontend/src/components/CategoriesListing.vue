@@ -1,7 +1,14 @@
 <template>
   <div>
-    <v-select class="hidden-md-and-up" :value="perGameCategories[selected]" :items="perGameCategories" @change="changeCategory">
-      <template v-slot:item="props">{{ props.item.name }}</template>
+    <v-select
+      class="hidden-md-and-up"
+      :value="perGameCategories[selected]"
+      :items="perGameCategories"
+      @change="changeCategory"
+    >
+      <template v-slot:item="props">
+        <span class="white--text">{{ props.item.name }}</span>
+      </template>
       <template v-slot:selection="props">{{ props.item.name }}</template>
     </v-select>
     <v-card class="hidden-sm-and-down">
