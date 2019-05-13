@@ -1,10 +1,6 @@
 <template>
   <v-container>
-    <v-layout wrap>
-      <v-flex xs12>
-        <recent-runs :runs="runs" @onRunClick="onRunClick"></recent-runs>
-      </v-flex>
-    </v-layout>
+    <recent-runs :runs="runs"></recent-runs>
   </v-container>
 </template>
 
