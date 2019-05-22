@@ -124,7 +124,7 @@ router.get('/liverunners', (req, res, next) => {
        * Exclude streams not playing a souls game
        */
       const gamesTwitchNames = games.map(g => g.names.twitch);
-      const soulsStreams = streams.filter(s => gamesTwitchNames.includes(s.game));
+      const soulsStreams = streams.filter(s => gamesTwitchNames.includes(s.game.name));
       return soulsStreams
     })
   })
