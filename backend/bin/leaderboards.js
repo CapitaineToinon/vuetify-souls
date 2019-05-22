@@ -23,7 +23,7 @@ const formatPlayer = player => {
       )[0];
     }
 
-    nameStyle = formatNameStyle(player["name-style"]);
+    nameStyle = player["name-style"];
 
     weblink = player.weblink;
   } else {
@@ -54,36 +54,6 @@ const ordinal = i => {
     return i + "rd";
   }
   return i + "th";
-}
-
-const formatNameStyle = (namestyle) => {
-  let style = null;
-
-  switch (namestyle.style) {
-    case "gradient":
-      style = {
-        background: `-webkit-linear-gradient(0deg, ${
-          namestyle["color-from"].dark
-          }, ${namestyle["color-to"].dark})`,
-        "-webkit-background-clip": "text",
-        "-webkit-text-fill-color": "transparent"
-      };
-      break;
-    case "solid":
-      style = {
-        background: `-webkit-linear-gradient(0deg, ${
-          namestyle["color"].dark
-          }, ${namestyle["color"].dark})`,
-        "-webkit-background-clip": "text",
-        "-webkit-text-fill-color": "transparent"
-      };
-      break;
-    default:
-      style = {};
-      break;
-  }
-
-  return style;
 }
 
 /**
