@@ -8,7 +8,7 @@
     "debug": "DEBUG=backend:* npm run dev"
   },
   "dependencies": {
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "co": "^4.6.0",
     "cookie-parser": "~1.4.3",
     "debug": "~4.0.1",
